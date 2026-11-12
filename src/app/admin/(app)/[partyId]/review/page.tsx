@@ -23,7 +23,10 @@ export default async function ReviewPage({
 
   return (
     <div className="grid gap-8 lg:grid-cols-[1fr_22rem]">
-      <PartyEvents partyId={partyId} types={["submission.created"]} />
+      <PartyEvents
+        partyId={partyId}
+        types={["submission.created", "submission.reviewed"]}
+      />
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">
           {t("queue", { count: pending.length })}

@@ -19,7 +19,7 @@ test("admins review submissions, give bonuses and move players", async ({
   await ana.getByLabel("Your photo").setInputFiles(TEST_PHOTO);
   await ana.getByRole("button", { name: "Send" }).click();
   await expect(ana.getByText("Under review")).toBeVisible();
-  await ana.getByRole("link", { name: "Challenges" }).click();
+  await ana.getByRole("link", { name: "All challenges" }).click();
   await ana.getByText("Best joke").click();
   await ana.getByLabel("Your answer").fill("Why did the chicken…");
   await ana.getByRole("button", { name: "Send" }).click();

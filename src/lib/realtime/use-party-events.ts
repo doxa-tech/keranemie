@@ -10,8 +10,11 @@ import {
   type PartyEventType,
 } from "./events";
 
+const REFRESH_DELAY_MS = 300;
+
 // Refreshes the current page when one of the given events is broadcast.
-// `onEvent` runs first, e.g. to show a toast.
+// `onEvent` runs first, e.g. to show a toast. Refreshes are grouped: a burst
+// of events causes one refresh, not one per event.
 export function usePartyEvents(
   partyId: string,
   types: PartyEventType[],
@@ -27,6 +30,13 @@ export function usePartyEvents(
 
   useEffect(() => {
     const wanted = new Set(typesKey.split(","));
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const scheduleRefresh = () => {
+      timer ??= setTimeout(() => {
+        timer = undefined;
+        router.refresh();
+      }, REFRESH_DELAY_MS);
+    };
     const supabase = createClient();
     const channel = supabase
       .channel(partyChannel(partyId))
@@ -34,11 +44,12 @@ export function usePartyEvents(
         const event = payload as PartyEvent;
         if (!wanted.has(event.type)) return;
         onEventRef.current?.(event);
-        router.refresh();
+        scheduleRefresh();
       })
       .subscribe();
 
     return () => {
+      clearTimeout(timer);
       supabase.removeChannel(channel);
     };
   }, [partyId, typesKey, router]);

@@ -8,7 +8,11 @@ export type PartyEvent =
   | { type: "challenge.updated" }
   | { type: "challenge.started" }
   | { type: "submission.created" }
-  | { type: "submission.reviewed"; playerId: string }
+  | {
+      type: "submission.reviewed";
+      playerId: string;
+      status: "approved" | "rejected";
+    }
   | { type: "score.updated" };
 
 export type PartyEventType = PartyEvent["type"];

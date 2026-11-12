@@ -27,11 +27,12 @@ async function review(
         eq(submissions.status, from),
       ),
     )
-    .returning({ playerId: submissions.playerId });
-  if (updated) {
+    .returning({ playerId: submissions.playerId, status: submissions.status });
+  if (updated && updated.status !== "pending") {
     await broadcast(partyId, {
       type: "submission.reviewed",
       playerId: updated.playerId,
+      status: updated.status,
     });
   }
   refresh();

@@ -234,7 +234,7 @@
     "endsIn": "Ends in"
   },
   "Challenge": {
-    "back": "Challenges",
+    "back": "All challenges",
     "points": "{count, plural, one {# point} other {# points}}",
     "endsIn": "Ends in",
     "yourSubmission": "Your submission",
@@ -321,5 +321,27 @@
     "allTeams": "All teams",
     "challenge": "Challenge",
     "allChallenges": "All challenges"
+  },
+  "PlayerEvents": {
+    "approved": "Your submission was approved! Points added.",
+    "rejected": "Your submission was rejected. Have a look.",
+    "flashStarted": "A flash challenge just started!"
+  },
+  "PlayerNav": {
+    "label": "Party",
+    "challenges": "Challenges",
+    "leaderboard": "Ranking",
+    "feed": "Feed"
+  },
+  "Leaderboard": {
+    "teams": "Teams",
+    "players": "Players",
+    "you": "you"
+  },
+  "Feed": {
+    "title": "Feed",
+    "empty": "Approved submissions will appear here.",
+    "points": "{count, plural, one {# pt} other {# pts}}",
+    "more": "Show more"
   }
 }

@@ -35,7 +35,7 @@ test("a player answers text challenges and sends a photo", async ({
   await expect(player.getByLabel("Your answer")).toHaveCount(0);
 
   // Photo: uploaded to storage, waiting for review.
-  await player.getByRole("link", { name: "Challenges" }).click();
+  await player.getByRole("link", { name: "All challenges" }).click();
   await expect(player.getByTestId("player-score")).toHaveText("5");
   await expect(player.getByTestId("team-score")).toHaveText("5");
   await todo.getByText("Team selfie").click();
@@ -50,7 +50,7 @@ test("a player answers text challenges and sends a photo", async ({
     .poll(() => photo.evaluate((img: HTMLImageElement) => img.naturalWidth))
     .toBeGreaterThan(0);
 
-  await player.getByRole("link", { name: "Challenges" }).click();
+  await player.getByRole("link", { name: "All challenges" }).click();
   await expect(player.getByText("Nothing to do right now.")).toBeVisible();
   await player.getByRole("tab", { name: /Done/ }).click();
   const done = player.getByRole("list", { name: "Done" });

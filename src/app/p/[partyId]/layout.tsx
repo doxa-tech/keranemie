@@ -1,11 +1,12 @@
 import { notFound } from "next/navigation";
 import { LanguageSwitch } from "@/components/language-switch";
-import { PartyEvents } from "@/components/party-events";
 import { TeamBadge } from "@/components/team-badge";
 import { requirePlayer } from "@/lib/auth";
 import { isUuid } from "@/lib/ids";
 import { getParty } from "@/lib/parties";
 import { getPlayerTeam } from "@/lib/players";
+import { PlayerEvents } from "./player-events";
+import { PlayerNav } from "./player-nav";
 
 export default async function PlayerLayout({
   children,
@@ -34,19 +35,11 @@ export default async function PlayerLayout({
           <LanguageSwitch />
         </div>
       </header>
-      <main className="mx-auto w-full max-w-xl flex-1 px-4 py-6">
+      <main className="mx-auto w-full max-w-xl flex-1 px-4 pt-6 pb-24">
         {children}
       </main>
-      <PartyEvents
-        partyId={partyId}
-        types={[
-          "party.updated",
-          "team.updated",
-          "player.updated",
-          "challenge.updated",
-          "challenge.started",
-        ]}
-      />
+      <PlayerNav partyId={partyId} />
+      <PlayerEvents partyId={partyId} playerId={player.id} />
     </div>
   );
 }

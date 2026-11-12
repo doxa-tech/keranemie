@@ -234,7 +234,7 @@
     "endsIn": "Fin dans"
   },
   "Challenge": {
-    "back": "Défis",
+    "back": "Tous les défis",
     "points": "{count, plural, one {# point} other {# points}}",
     "endsIn": "Fin dans",
     "yourSubmission": "Votre participation",
@@ -321,5 +321,27 @@
     "allTeams": "Toutes les équipes",
     "challenge": "Défi",
     "allChallenges": "Tous les défis"
+  },
+  "PlayerEvents": {
+    "approved": "Votre participation est validée ! Points ajoutés.",
+    "rejected": "Votre participation a été refusée. Jetez un œil.",
+    "flashStarted": "Un défi flash vient de commencer !"
+  },
+  "PlayerNav": {
+    "label": "Partie",
+    "challenges": "Défis",
+    "leaderboard": "Classement",
+    "feed": "Fil"
+  },
+  "Leaderboard": {
+    "teams": "Équipes",
+    "players": "Joueurs",
+    "you": "vous"
+  },
+  "Feed": {
+    "title": "Fil",
+    "empty": "Les participations validées apparaîtront ici.",
+    "points": "{count, plural, one {# pt} other {# pts}}",
+    "more": "Voir plus"
   }
 }
