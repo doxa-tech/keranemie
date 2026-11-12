@@ -1,11 +1,63 @@
 {
   "Common": {
     "appName": "Keranemie",
-    "tagline": "Challenges for your event.",
-    "language": "Language"
+    "switchLanguage": "Passer en français"
   },
   "Home": {
     "title": "Keranemie",
-    "tagline": "Challenges for your event."
+    "tagline": "Challenges for your event.",
+    "organize": "Organize a party"
+  },
+  "Login": {
+    "title": "Organizer sign-in",
+    "description": "We'll email you a sign-in link. No password needed.",
+    "email": "Email",
+    "submit": "Send me a link",
+    "error": "We couldn't send the link. Check the address and try again.",
+    "sentTitle": "Check your email",
+    "sentBody": "We sent a sign-in link to {email}.",
+    "linkError": "This sign-in link is invalid or has expired. Ask for a new one."
+  },
+  "Admin": {
+    "signOut": "Sign out",
+    "myParties": "My parties",
+    "newParty": "New party",
+    "createParty": "Create party",
+    "noParties": "No parties yet. Create one to get started."
+  },
+  "PartyStatus": {
+    "draft": "Draft",
+    "open": "Open",
+    "live": "Live",
+    "ended": "Ended"
+  },
+  "PartyForm": {
+    "name": "Name",
+    "description": "Description",
+    "descriptionHint": "Optional. Shown to players when they join.",
+    "startsAt": "Start",
+    "endsAt": "End",
+    "errors": {
+      "invalid": "Please check the fields.",
+      "endsBeforeStart": "The end must be after the start."
+    }
+  },
+  "PartyNav": {
+    "overview": "Overview",
+    "share": "Share"
+  },
+  "PartyOverview": {
+    "joinCode": "Join code",
+    "startsAt": "Start",
+    "endsAt": "End",
+    "description": "Description"
+  },
+  "Share": {
+    "instructions": "Scan the QR code or enter the code to join.",
+    "copyLink": "Copy link",
+    "copied": "Link copied",
+    "fullScreen": "Full screen",
+    "exitFullScreen": "Exit full screen",
+    "qrAlt": "QR code to join the party"
   }
 }

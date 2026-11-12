@@ -2,6 +2,17 @@ export const locales = ["en", "fr"] as const;
 export type Locale = (typeof locales)[number];
 export const defaultLocale: Locale = "en";
 export const localeCookie = "locale";
+export const timeZoneCookie = "tz";
+
+export function isTimeZone(value: string | undefined): value is string {
+  if (!value) return false;
+  try {
+    new Intl.DateTimeFormat("en", { timeZone: value });
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 export function isLocale(value: string | undefined): value is Locale {
   return locales.includes(value as Locale);

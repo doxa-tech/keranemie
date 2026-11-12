@@ -1,11 +1,63 @@
 {
   "Common": {
     "appName": "Keranemie",
-    "tagline": "Des défis pour votre événement.",
-    "language": "Langue"
+    "switchLanguage": "Switch to English"
   },
   "Home": {
     "title": "Keranemie",
-    "tagline": "Des défis pour votre événement."
+    "tagline": "Des défis pour votre événement.",
+    "organize": "Organiser une partie"
+  },
+  "Login": {
+    "title": "Connexion organisateur",
+    "description": "Nous vous envoyons un lien de connexion par e-mail. Pas de mot de passe.",
+    "email": "E-mail",
+    "submit": "Envoyer le lien",
+    "error": "Impossible d'envoyer le lien. Vérifiez l'adresse et réessayez.",
+    "sentTitle": "Consultez vos e-mails",
+    "sentBody": "Nous avons envoyé un lien de connexion à {email}.",
+    "linkError": "Ce lien de connexion est invalide ou a expiré. Demandez-en un nouveau."
+  },
+  "Admin": {
+    "signOut": "Se déconnecter",
+    "myParties": "Mes parties",
+    "newParty": "Nouvelle partie",
+    "createParty": "Créer la partie",
+    "noParties": "Aucune partie pour l'instant. Créez-en une pour commencer."
+  },
+  "PartyStatus": {
+    "draft": "Brouillon",
+    "open": "Ouverte",
+    "live": "En cours",
+    "ended": "Terminée"
+  },
+  "PartyForm": {
+    "name": "Nom",
+    "description": "Description",
+    "descriptionHint": "Facultatif. Affichée aux joueurs quand ils rejoignent.",
+    "startsAt": "Début",
+    "endsAt": "Fin",
+    "errors": {
+      "invalid": "Vérifiez les champs.",
+      "endsBeforeStart": "La fin doit être après le début."
+    }
+  },
+  "PartyNav": {
+    "overview": "Aperçu",
+    "share": "Partager"
+  },
+  "PartyOverview": {
+    "joinCode": "Code",
+    "startsAt": "Début",
+    "endsAt": "Fin",
+    "description": "Description"
+  },
+  "Share": {
+    "instructions": "Scannez le QR code ou saisissez le code pour rejoindre.",
+    "copyLink": "Copier le lien",
+    "copied": "Lien copié",
+    "fullScreen": "Plein écran",
+    "exitFullScreen": "Quitter le plein écran",
+    "qrAlt": "QR code pour rejoindre la partie"
   }
 }
