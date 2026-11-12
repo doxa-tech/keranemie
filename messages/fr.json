@@ -52,17 +52,13 @@
     "saved": "Enregistré."
   },
   "PartyNav": {
-    "overview": "Aperçu",
     "share": "Partager",
     "challenges": "Défis",
     "teams": "Équipes",
-    "settings": "Réglages"
-  },
-  "PartyOverview": {
-    "joinCode": "Code",
-    "startsAt": "Début",
-    "endsAt": "Fin",
-    "description": "Description"
+    "settings": "Réglages",
+    "dashboard": "Tableau de bord",
+    "review": "Validation",
+    "gallery": "Galerie"
   },
   "Share": {
     "instructions": "Scannez le QR code ou saisissez le code pour rejoindre.",
@@ -266,5 +262,64 @@
     "pending": "En attente",
     "rejected": "Refusé",
     "wrongAnswer": "Mauvaise réponse."
+  },
+  "Review": {
+    "queue": "{count, plural, =0 {Rien à valider} one {# participation à valider} other {# participations à valider}}",
+    "queueLabel": "Participations à valider",
+    "empty": "Tout est à jour. Les nouvelles participations apparaîtront ici.",
+    "points": "Points",
+    "approve": "Valider",
+    "reject": "Refuser",
+    "rejectMessage": "Message au joueur (facultatif)",
+    "confirmReject": "Refuser",
+    "cancel": "Annuler",
+    "alreadyReviewed": "Un autre admin a déjà traité cette participation.",
+    "recent": "Traitées récemment",
+    "noRecent": "Aucune participation traitée.",
+    "savePoints": "Enregistrer",
+    "pointsSaved": "Points modifiés"
+  },
+  "Dashboard": {
+    "joinCode": "Code",
+    "startsIn": "Début dans",
+    "endsIn": "Fin dans",
+    "draftHint": "Brouillon : ouvrez la partie dans les réglages",
+    "players": "Joueurs",
+    "toReview": "À valider",
+    "approved": "Validées",
+    "teamRanking": "Équipes",
+    "noTeams": "Aucune équipe.",
+    "playerCount": "{count, plural, =0 {aucun joueur} one {# joueur} other {# joueurs}}",
+    "flashChallenges": "Défis flash",
+    "noFlash": "Aucun défi flash à venir ou en cours.",
+    "flashStartsIn": "commence dans",
+    "flashEndsIn": "se termine dans",
+    "playerRanking": "Joueurs",
+    "noPlayers": "Aucun joueur. Partagez le code pour qu'ils rejoignent.",
+    "moveTo": "Équipe de {name}",
+    "activity": "Activité récente",
+    "noActivity": "Aucune participation.",
+    "reviewNow": "{count, plural, one {Valider # participation} other {Valider # participations}}",
+    "bonus": {
+      "open": "Points bonus",
+      "title": "Donner ou retirer des points",
+      "target": "Pour",
+      "teams": "Équipes",
+      "players": "Joueurs",
+      "points": "Points",
+      "pointsHint": "Un nombre négatif retire des points.",
+      "reason": "Raison",
+      "submit": "Enregistrer",
+      "saved": "Points enregistrés",
+      "invalid": "Vérifiez les champs. Les points ne peuvent pas valoir 0."
+    }
+  },
+  "Gallery": {
+    "title": "Photos",
+    "empty": "Aucune photo.",
+    "team": "Équipe",
+    "allTeams": "Toutes les équipes",
+    "challenge": "Défi",
+    "allChallenges": "Tous les défis"
   }
 }

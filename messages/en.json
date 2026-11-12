@@ -52,17 +52,13 @@
     "saved": "Saved."
   },
   "PartyNav": {
-    "overview": "Overview",
     "share": "Share",
     "challenges": "Challenges",
     "teams": "Teams",
-    "settings": "Settings"
-  },
-  "PartyOverview": {
-    "joinCode": "Join code",
-    "startsAt": "Start",
-    "endsAt": "End",
-    "description": "Description"
+    "settings": "Settings",
+    "dashboard": "Dashboard",
+    "review": "Review",
+    "gallery": "Gallery"
   },
   "Share": {
     "instructions": "Scan the QR code or enter the code to join.",
@@ -266,5 +262,64 @@
     "pending": "Under review",
     "rejected": "Rejected",
     "wrongAnswer": "Wrong answer."
+  },
+  "Review": {
+    "queue": "{count, plural, =0 {Nothing to review} one {# submission to review} other {# submissions to review}}",
+    "queueLabel": "Submissions to review",
+    "empty": "All caught up. New submissions will appear here.",
+    "points": "Points",
+    "approve": "Approve",
+    "reject": "Reject",
+    "rejectMessage": "Message to the player (optional)",
+    "confirmReject": "Reject",
+    "cancel": "Cancel",
+    "alreadyReviewed": "Another admin already reviewed this submission.",
+    "recent": "Recently reviewed",
+    "noRecent": "No reviewed submissions yet.",
+    "savePoints": "Save",
+    "pointsSaved": "Points updated"
+  },
+  "Dashboard": {
+    "joinCode": "Code",
+    "startsIn": "Starts in",
+    "endsIn": "Ends in",
+    "draftHint": "Draft: open the party in the settings",
+    "players": "Players",
+    "toReview": "To review",
+    "approved": "Approved",
+    "teamRanking": "Teams",
+    "noTeams": "No teams yet.",
+    "playerCount": "{count, plural, =0 {no players} one {# player} other {# players}}",
+    "flashChallenges": "Flash challenges",
+    "noFlash": "No upcoming or running flash challenges.",
+    "flashStartsIn": "starts in",
+    "flashEndsIn": "ends in",
+    "playerRanking": "Players",
+    "noPlayers": "No players yet. Share the code to let them join.",
+    "moveTo": "Team of {name}",
+    "activity": "Latest activity",
+    "noActivity": "No submissions yet.",
+    "reviewNow": "{count, plural, one {Review # submission} other {Review # submissions}}",
+    "bonus": {
+      "open": "Bonus points",
+      "title": "Give or remove points",
+      "target": "For",
+      "teams": "Teams",
+      "players": "Players",
+      "points": "Points",
+      "pointsHint": "Use a negative number to remove points.",
+      "reason": "Reason",
+      "submit": "Save",
+      "saved": "Points saved",
+      "invalid": "Please check the fields. Points can't be 0."
+    }
+  },
+  "Gallery": {
+    "title": "Photos",
+    "empty": "No photos yet.",
+    "team": "Team",
+    "allTeams": "All teams",
+    "challenge": "Challenge",
+    "allChallenges": "All challenges"
   }
 }

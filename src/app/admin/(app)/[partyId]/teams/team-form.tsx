@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import {
@@ -76,15 +76,17 @@ function Fields({
 }) {
   const t = useTranslations("Teams");
   const [state, formAction, pending] = useActionState<TeamFormState, FormData>(
-    team ? updateTeam.bind(null, partyId, team.id) : createTeam.bind(null, partyId),
+    async (prev, formData) => {
+      const result = team
+        ? await updateTeam(partyId, team.id, prev, formData)
+        : await createTeam(partyId, prev, formData);
+      if (result.saved) onSaved?.();
+      return result;
+    },
     {},
   );
   const [color, setColor] = useState(defaultColor);
   const idPrefix = team ? `team-${team.id}` : "new-team";
-
-  useEffect(() => {
-    if (state.saved) onSaved?.();
-  }, [state.saved, onSaved]);
 
   return (
     <form action={formAction} className="space-y-4">

@@ -89,13 +89,10 @@ export async function lifecycle(page: Page, partyId: string, step: string) {
   await expect(page.getByRole("dialog")).toBeHidden();
 }
 
-// Reads the join code from the party overview.
+// Reads the join code from the share page.
 export async function joinCode(page: Page, partyId: string) {
-  await page.goto(`/admin/${partyId}`);
-  return (await page
-    .locator("dt", { hasText: "Join code" })
-    .locator("+ dd")
-    .textContent())!;
+  await page.goto(`/admin/${partyId}/share`);
+  return (await page.getByTestId("join-code").textContent())!;
 }
 
 // Joins a party as a player in a fresh phone-sized browser context.

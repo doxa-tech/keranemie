@@ -30,9 +30,11 @@ export default async function PartyLayout({
         <PartyNav
           partyId={partyId}
           links={[
-            { href: "", label: t("overview") },
+            { href: "", label: t("dashboard") },
+            { href: "/review", label: t("review") },
             { href: "/challenges", label: t("challenges") },
             { href: "/teams", label: t("teams") },
+            { href: "/gallery", label: t("gallery") },
             { href: "/settings", label: t("settings") },
             { href: "/share", label: t("share") },
           ]}

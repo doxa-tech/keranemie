@@ -21,15 +21,10 @@ test("an admin signs in, creates a party and shares it", async ({ page }) => {
   await expect(
     page.getByRole("heading", { name: "Summer party" }),
   ).toBeVisible();
-  await expect(page.getByText("Draft")).toBeVisible();
-  const code = await page
-    .locator("dt", { hasText: "Join code" })
-    .locator("+ dd")
-    .textContent();
-  expect(code).toMatch(/^[A-HJ-NP-Z2-9]{6}$/);
-
+  await expect(page.getByText("Draft", { exact: true })).toBeVisible();
   await page.getByRole("link", { name: "Share" }).click();
-  await expect(page.getByTestId("join-code")).toHaveText(code!);
+  const code = await page.getByTestId("join-code").textContent();
+  expect(code).toMatch(/^[A-HJ-NP-Z2-9]{6}$/);
   await expect(page.getByText(`/join/${code}`)).toBeVisible();
   await expect(
     page.getByRole("img", { name: "QR code to join the party" }).locator("svg"),
