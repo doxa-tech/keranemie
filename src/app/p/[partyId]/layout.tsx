@@ -39,7 +39,13 @@ export default async function PlayerLayout({
       </main>
       <PartyEvents
         partyId={partyId}
-        types={["party.updated", "team.updated", "player.updated"]}
+        types={[
+          "party.updated",
+          "team.updated",
+          "player.updated",
+          "challenge.updated",
+          "challenge.started",
+        ]}
       />
     </div>
   );

@@ -52,7 +52,7 @@ test("players join an open party and are spread over the teams", async ({
 
   // Starting the party updates the waiting screen without a reload.
   await lifecycle(page, partyId, "Start now");
-  await expect(ana.getByText("The party has started!")).toBeVisible();
+  await expect(ana.getByText("My score")).toBeVisible();
 
   // Players can't open the admin pages.
   await ana.goto(`/admin/${partyId}`);

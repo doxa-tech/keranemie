@@ -226,7 +226,45 @@
     "yourTeam": "Votre équipe",
     "startsIn": "La partie commence dans",
     "waitingHint": "Les défis apparaîtront ici au début de la partie. Gardez cette page ouverte.",
-    "live": "La partie a commencé !",
-    "ended": "La partie est terminée. Merci d'avoir joué !"
+    "ended": "La partie est terminée. Merci d'avoir joué !",
+    "todo": "À faire",
+    "done": "Faits",
+    "nothingToDo": "Rien à faire pour l'instant. De nouveaux défis peuvent apparaître !",
+    "nothingDone": "Aucun défi fait pour l'instant.",
+    "points": "{count, plural, one {# pt} other {# pts}}",
+    "flashEndsIn": "Flash · se termine dans",
+    "myScore": "Mon score",
+    "teamScore": "Score {team}",
+    "endsIn": "Fin dans"
+  },
+  "Challenge": {
+    "back": "Défis",
+    "points": "{count, plural, one {# point} other {# points}}",
+    "endsIn": "Fin dans",
+    "yourSubmission": "Votre participation",
+    "tryAgain": "Vous pouvez réessayer.",
+    "unavailable": "Ce défi n'est plus disponible."
+  },
+  "Submit": {
+    "answer": "Votre réponse",
+    "photo": "Votre photo",
+    "preview": "Aperçu de votre photo",
+    "caption": "Légende (facultatif)",
+    "send": "Envoyer",
+    "sending": "Envoi…",
+    "approved": "Validé ! Points ajoutés.",
+    "pending": "Envoyé ! Un admin va le vérifier.",
+    "wrongAnswer": "Mauvaise réponse. Réessayez !",
+    "errors": {
+      "unavailable": "Ce défi n'est plus disponible.",
+      "alreadyDone": "Vous avez déjà fait ce défi.",
+      "upload": "L'envoi a échoué. Vérifiez votre connexion et réessayez."
+    }
+  },
+  "SubmissionStatus": {
+    "approved": "+{points} pts",
+    "pending": "En attente",
+    "rejected": "Refusé",
+    "wrongAnswer": "Mauvaise réponse."
   }
 }

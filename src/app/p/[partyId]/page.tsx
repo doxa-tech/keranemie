@@ -2,9 +2,15 @@ import { getFormatter, getTranslations } from "next-intl/server";
 import { Countdown } from "@/components/countdown";
 import { TeamBadge } from "@/components/team-badge";
 import { requirePlayer } from "@/lib/auth";
+import { RefreshAt } from "@/components/refresh-at";
+import { nextScheduledChange } from "@/lib/game/challenge";
 import { partyStatus } from "@/lib/game/party";
 import { getParty } from "@/lib/parties";
 import { getPlayerTeam } from "@/lib/players";
+import { getPlayerScore, getTeamScore } from "@/lib/scores";
+import { listPlayerChallenges } from "@/lib/submissions";
+import { ChallengeList } from "./challenge-list";
+import { ScoreCard } from "./score-card";
 
 export default async function PlayerHome({
   params,
@@ -44,10 +50,34 @@ export default async function PlayerHome({
     );
   }
 
-  if (status === "ended") {
-    return <p className="py-8 text-center">{t("ended")}</p>;
-  }
+  const [items, playerScore, teamScore] = await Promise.all([
+    listPlayerChallenges(party, player),
+    getPlayerScore(player.id),
+    getTeamScore(player.teamId),
+  ]);
 
-  // Live: challenges come in phase 4.
-  return <p className="py-8 text-center">{t("live")}</p>;
+  const nextChange = nextScheduledChange(
+    items.map((i) => i.challenge),
+    party.endsAt,
+    new Date(),
+  );
+
+  return (
+    <div className="space-y-6">
+      <RefreshAt at={nextChange?.toISOString() ?? null} />
+      {status === "ended" ? (
+        <p className="rounded-xl border p-3 text-center">{t("ended")}</p>
+      ) : (
+        <p className="text-muted-foreground text-center text-sm">
+          {t("endsIn")} <Countdown to={party.endsAt.toISOString()} />
+        </p>
+      )}
+      <ScoreCard
+        playerScore={playerScore}
+        teamScore={teamScore}
+        teamName={team?.name ?? ""}
+      />
+      <ChallengeList partyId={partyId} items={items} />
+    </div>
+  );
 }

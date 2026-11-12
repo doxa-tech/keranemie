@@ -72,3 +72,21 @@ export function validateSubmission(
   }
   return { status: "approved", points: challenge.points };
 }
+
+// The next time the list of available challenges changes on its own:
+// a flash challenge starting or ending, or the party ending.
+export function nextScheduledChange(
+  challenges: ChallengeTiming[],
+  partyEndsAt: Date,
+  now: Date,
+): Date | null {
+  const times = [partyEndsAt];
+  for (const challenge of challenges) {
+    if (challenge.kind !== "flash" || challenge.hidden) continue;
+    if (challenge.flashStartsAt) times.push(challenge.flashStartsAt);
+    const end = flashEndsAt(challenge);
+    if (end) times.push(end);
+  }
+  const future = times.filter((t) => t > now).map((t) => t.getTime());
+  return future.length ? new Date(Math.min(...future)) : null;
+}

@@ -226,7 +226,45 @@
     "yourTeam": "Your team",
     "startsIn": "The party starts in",
     "waitingHint": "Challenges will appear here when the party starts. Keep this page open.",
-    "live": "The party has started!",
-    "ended": "The party is over. Thanks for playing!"
+    "ended": "The party is over. Thanks for playing!",
+    "todo": "To do",
+    "done": "Done",
+    "nothingToDo": "Nothing to do right now. New challenges may appear!",
+    "nothingDone": "No challenges done yet.",
+    "points": "{count, plural, one {# pt} other {# pts}}",
+    "flashEndsIn": "Flash · ends in",
+    "myScore": "My score",
+    "teamScore": "{team} score",
+    "endsIn": "Ends in"
+  },
+  "Challenge": {
+    "back": "Challenges",
+    "points": "{count, plural, one {# point} other {# points}}",
+    "endsIn": "Ends in",
+    "yourSubmission": "Your submission",
+    "tryAgain": "You can try again.",
+    "unavailable": "This challenge isn't available anymore."
+  },
+  "Submit": {
+    "answer": "Your answer",
+    "photo": "Your photo",
+    "preview": "Preview of your photo",
+    "caption": "Caption (optional)",
+    "send": "Send",
+    "sending": "Sending…",
+    "approved": "Approved! Points added.",
+    "pending": "Sent! An admin will review it.",
+    "wrongAnswer": "Wrong answer. Try again!",
+    "errors": {
+      "unavailable": "This challenge isn't available anymore.",
+      "alreadyDone": "You already did this challenge.",
+      "upload": "The upload failed. Check your connection and try again."
+    }
+  },
+  "SubmissionStatus": {
+    "approved": "+{points} pts",
+    "pending": "Under review",
+    "rejected": "Rejected",
+    "wrongAnswer": "Wrong answer."
   }
 }

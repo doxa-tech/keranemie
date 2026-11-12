@@ -117,3 +117,54 @@ export async function joinAsPlayer(
   await expect(page).toHaveURL(/\/p\/[0-9a-f-]+$/);
   return page;
 }
+
+type ChallengeOptions = {
+  title: string;
+  type?: "photo" | "text";
+  points?: number;
+  validation?: "auto" | "manual";
+  expectedAnswer?: string;
+};
+
+export async function addChallenge(
+  page: Page,
+  partyId: string,
+  { title, type = "photo", points = 10, validation = "manual", expectedAnswer }: ChallengeOptions,
+) {
+  await page.goto(`/admin/${partyId}/challenges/new`);
+  await page.getByLabel("Title").fill(title);
+  await page.getByLabel("Type").selectOption(type);
+  await page.getByLabel("Points").fill(String(points));
+  await page.getByLabel("Validation").selectOption(validation);
+  if (expectedAnswer) {
+    await page.getByLabel("Expected answer").fill(expectedAnswer);
+  }
+  await page.getByRole("button", { name: "Create challenge" }).click();
+  await expect(page).toHaveURL(new RegExp(`/admin/${partyId}/challenges$`));
+}
+
+// An admin with a live party: teams, the given challenges, opened and
+// started. Returns the party id and join code.
+export async function setUpLiveParty(
+  page: Page,
+  challenges: ChallengeOptions[],
+  teams = ["Foxes", "Owls"],
+) {
+  await loginAsAdmin(page);
+  const partyId = await createParty(page, { name: "Live party" });
+  await addTeams(page, partyId, teams);
+  for (const challenge of challenges) await addChallenge(page, partyId, challenge);
+  await lifecycle(page, partyId, "Open the party");
+  await lifecycle(page, partyId, "Start now");
+  return { partyId, code: await joinCode(page, partyId) };
+}
+
+// A small valid PNG, for photo uploads.
+export const TEST_PHOTO = {
+  name: "photo.png",
+  mimeType: "image/png",
+  buffer: Buffer.from(
+    "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAEklEQVR4nGP4z8CAFWEXHbQSACj/P8Fu7N9hAAAAAElFTkSuQmCC",
+    "base64",
+  ),
+};

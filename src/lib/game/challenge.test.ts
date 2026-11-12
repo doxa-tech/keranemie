@@ -3,6 +3,7 @@ import {
   flashEndsAt,
   flashState,
   isChallengeAvailable,
+  nextScheduledChange,
   normalizeAnswer,
   validateSubmission,
 } from "./challenge";
@@ -111,5 +112,24 @@ describe("validateSubmission", () => {
         null,
       ),
     ).toEqual({ status: "approved", points: 10 });
+  });
+});
+
+describe("nextScheduledChange", () => {
+  it("returns the closest future flash start, flash end or party end", () => {
+    const at = (iso: string) => new Date(iso);
+    expect(
+      nextScheduledChange([flash, permanent], party.endsAt, at("2026-12-01T18:30:00Z")),
+    ).toEqual(at("2026-12-01T19:00:00Z"));
+    expect(
+      nextScheduledChange([flash], party.endsAt, at("2026-12-01T19:05:00Z")),
+    ).toEqual(at("2026-12-01T19:15:00Z"));
+    expect(
+      nextScheduledChange([flash], party.endsAt, at("2026-12-01T20:00:00Z")),
+    ).toEqual(party.endsAt);
+    expect(
+      nextScheduledChange([{ ...flash, hidden: true }], party.endsAt, at("2026-12-01T18:30:00Z")),
+    ).toEqual(party.endsAt);
+    expect(nextScheduledChange([], party.endsAt, at("2026-12-02T00:00:00Z"))).toBeNull();
   });
 });
