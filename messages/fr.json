@@ -343,5 +343,22 @@
     "empty": "Les participations validées apparaîtront ici.",
     "points": "{count, plural, one {# pt} other {# pts}}",
     "more": "Voir plus"
+  },
+  "PushPrompt": {
+    "description": "Recevez une notification quand un défi flash commence ou qu'une participation est validée.",
+    "enable": "Activer les notifications",
+    "iosHint": "Pour recevoir les notifications sur iPhone, touchez Partager puis « Sur l'écran d'accueil », et ouvrez Keranemie depuis l'écran d'accueil.",
+    "enabled": "Notifications activées.",
+    "denied": "Les notifications sont bloquées. Vous pouvez les autoriser dans les réglages du navigateur.",
+    "failed": "Impossible d'activer les notifications.",
+    "dismiss": "Fermer"
+  },
+  "Push": {
+    "flashTitle": "⚡ Défi flash !",
+    "flashBody": "« {title} » vient de commencer. Vite !",
+    "approvedTitle": "Participation validée",
+    "approvedBody": "+{points} points !",
+    "rejectedTitle": "Participation refusée",
+    "rejectedBody": "Jetez un œil et réessayez."
   }
 }

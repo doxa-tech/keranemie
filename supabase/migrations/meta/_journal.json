@@ -8,6 +8,20 @@
       "when": 1794507919965,
       "tag": "20261112182519_init",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794511781547,
+      "tag": "20261112192941_push_locale",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794511782624,
+      "tag": "20261112192942_flash_notification_cron",
+      "breakpoints": true
     }
   ]
 }

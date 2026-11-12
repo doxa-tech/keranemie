@@ -3,6 +3,7 @@ import {
   flashEndsAt,
   flashState,
   isChallengeAvailable,
+  isFlashStartDue,
   nextScheduledChange,
   normalizeAnswer,
   validateSubmission,
@@ -131,5 +132,25 @@ describe("nextScheduledChange", () => {
       nextScheduledChange([{ ...flash, hidden: true }], party.endsAt, at("2026-12-01T18:30:00Z")),
     ).toEqual(party.endsAt);
     expect(nextScheduledChange([], party.endsAt, at("2026-12-02T00:00:00Z"))).toBeNull();
+  });
+});
+
+describe("isFlashStartDue", () => {
+  const running = { ...flash, startNotifiedAt: null };
+
+  it("is due for a running flash challenge not announced yet", () => {
+    expect(isFlashStartDue(running, party, during)).toBe(true);
+  });
+
+  it("is not due when already announced, hidden, over or not started", () => {
+    expect(isFlashStartDue({ ...running, startNotifiedAt: during }, party, during)).toBe(false);
+    expect(isFlashStartDue({ ...running, hidden: true }, party, during)).toBe(false);
+    expect(isFlashStartDue(running, party, new Date("2026-12-01T19:30:00Z"))).toBe(false);
+    expect(isFlashStartDue(running, party, new Date("2026-12-01T18:30:00Z"))).toBe(false);
+  });
+
+  it("is not due for permanent challenges or parties that aren't live", () => {
+    expect(isFlashStartDue({ ...permanent, startNotifiedAt: null }, party, during)).toBe(false);
+    expect(isFlashStartDue(running, { ...party, openedAt: null }, during)).toBe(false);
   });
 });

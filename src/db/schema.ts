@@ -236,6 +236,8 @@ export const pushSubscriptions = pgTable(
     endpoint: text("endpoint").notNull().unique(),
     p256dh: text("p256dh").notNull(),
     auth: text("auth").notNull(),
+    // Language of the notifications sent to this device.
+    locale: text("locale").notNull().default("en"),
     createdAt: createdAt(),
   },
   (t) => [index("push_subscriptions_player_id_idx").on(t.playerId)],

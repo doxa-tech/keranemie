@@ -1,4 +1,5 @@
 import { expect, type Browser, type Page } from "@playwright/test";
+import postgres from "postgres";
 
 const MAILPIT_URL = "http://127.0.0.1:55324";
 
@@ -165,3 +166,19 @@ export const TEST_PHOTO = {
     "base64",
   ),
 };
+
+// When a challenge's start was announced, read from the local database.
+export async function startNotifiedAt(partyId: string, title: string) {
+  const sql = postgres(
+    "postgresql://postgres:postgres@127.0.0.1:55322/postgres",
+    { max: 1 },
+  );
+  try {
+    const [row] = await sql<{ start_notified_at: Date | null }[]>`
+      select start_notified_at from challenges
+      where party_id = ${partyId} and title = ${title}`;
+    return row?.start_notified_at?.toISOString() ?? null;
+  } finally {
+    await sql.end();
+  }
+}

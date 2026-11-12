@@ -11,6 +11,7 @@ import {
   parseChallengeForm,
   type ChallengeFormState,
 } from "@/lib/challenge-form";
+import { announceFlashChallenge } from "@/lib/flash-notifications";
 import { moveInList } from "@/lib/ordering";
 import { broadcast } from "@/lib/realtime/server";
 
@@ -91,6 +92,8 @@ export async function launchFlashNow(partyId: string, challengeId: string) {
         eq(challenges.kind, "flash"),
       ),
     );
+  // Announced now rather than by the next run of the scheduled job.
+  await announceFlashChallenge(challengeId);
   await afterChallengesChange(partyId);
 }
 

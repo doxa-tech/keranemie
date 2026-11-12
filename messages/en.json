@@ -343,5 +343,22 @@
     "empty": "Approved submissions will appear here.",
     "points": "{count, plural, one {# pt} other {# pts}}",
     "more": "Show more"
+  },
+  "PushPrompt": {
+    "description": "Get a notification when a flash challenge starts or a submission is reviewed.",
+    "enable": "Turn on notifications",
+    "iosHint": "To get notifications on iPhone, tap Share then “Add to Home Screen”, and open Keranemie from there.",
+    "enabled": "Notifications are on.",
+    "denied": "Notifications are blocked. You can allow them in your browser settings.",
+    "failed": "Couldn't turn on notifications.",
+    "dismiss": "Dismiss"
+  },
+  "Push": {
+    "flashTitle": "⚡ Flash challenge!",
+    "flashBody": "“{title}” just started. Hurry!",
+    "approvedTitle": "Submission approved",
+    "approvedBody": "+{points} points!",
+    "rejectedTitle": "Submission rejected",
+    "rejectedBody": "Have a look and try again."
   }
 }

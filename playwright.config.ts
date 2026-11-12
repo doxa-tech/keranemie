@@ -3,6 +3,8 @@ import { defineConfig, devices } from "@playwright/test";
 // Needs the local Supabase stack running (`npm run supabase:start`).
 export default defineConfig({
   testDir: "./e2e",
+  // Scenario tests drive an admin and several players through a whole party.
+  timeout: 60_000,
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,

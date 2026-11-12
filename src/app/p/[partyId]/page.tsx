@@ -10,6 +10,7 @@ import { getPlayerTeam } from "@/lib/players";
 import { getPlayerScore, getTeamScore } from "@/lib/scores";
 import { listPlayerChallenges } from "@/lib/submissions";
 import { ChallengeList } from "./challenge-list";
+import { PushPrompt } from "./push-prompt";
 import { ScoreCard } from "./score-card";
 
 export default async function PlayerHome({
@@ -26,6 +27,7 @@ export default async function PlayerHome({
   if (status === "open" || status === "draft") {
     return (
       <div className="flex flex-col items-center gap-6 py-8 text-center">
+        <PushPrompt partyId={partyId} />
         <div className="space-y-2">
           <p className="text-muted-foreground">{t("yourTeam")}</p>
           {team && <TeamBadge team={team} className="px-4 py-1.5 text-lg" />}
@@ -65,6 +67,7 @@ export default async function PlayerHome({
   return (
     <div className="space-y-6">
       <RefreshAt at={nextChange?.toISOString() ?? null} />
+      {status !== "ended" && <PushPrompt partyId={partyId} />}
       {status === "ended" ? (
         <p className="rounded-xl border p-3 text-center">{t("ended")}</p>
       ) : (

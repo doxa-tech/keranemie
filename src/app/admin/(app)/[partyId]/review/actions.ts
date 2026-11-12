@@ -6,6 +6,7 @@ import { z } from "zod";
 import { db } from "@/db";
 import { submissions } from "@/db/schema";
 import { requirePartyAdmin } from "@/lib/auth";
+import { pushToPlayer } from "@/lib/push";
 import { broadcast } from "@/lib/realtime/server";
 
 const points = z.coerce.number().int().min(-10_000).max(10_000);
@@ -27,13 +28,26 @@ async function review(
         eq(submissions.status, from),
       ),
     )
-    .returning({ playerId: submissions.playerId, status: submissions.status });
+    .returning({
+      playerId: submissions.playerId,
+      status: submissions.status,
+      challengeId: submissions.challengeId,
+    });
   if (updated && updated.status !== "pending") {
     await broadcast(partyId, {
       type: "submission.reviewed",
       playerId: updated.playerId,
       status: updated.status,
     });
+    // Only the first review is pushed, not later point changes.
+    if (from === "pending") {
+      await pushToPlayer(updated.playerId, {
+        titleKey: updated.status === "approved" ? "approvedTitle" : "rejectedTitle",
+        bodyKey: updated.status === "approved" ? "approvedBody" : "rejectedBody",
+        values: { points: values.pointsAwarded ?? 0 },
+        url: `/p/${partyId}/challenges/${updated.challengeId}`,
+      });
+    }
   }
   refresh();
   return { ok: !!updated };

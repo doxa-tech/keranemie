@@ -90,3 +90,17 @@ export function nextScheduledChange(
   const future = times.filter((t) => t > now).map((t) => t.getTime());
   return future.length ? new Date(Math.min(...future)) : null;
 }
+
+// A flash challenge whose start should be announced now: started, still
+// running, visible, in a live party, and not announced yet.
+export function isFlashStartDue(
+  challenge: ChallengeTiming & { startNotifiedAt: Date | null },
+  party: PartyTimes,
+  now: Date,
+): boolean {
+  return (
+    challenge.kind === "flash" &&
+    challenge.startNotifiedAt === null &&
+    isChallengeAvailable(challenge, party, now)
+  );
+}
