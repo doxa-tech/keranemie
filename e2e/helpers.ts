@@ -1,4 +1,4 @@
-import { expect, type Page } from "@playwright/test";
+import { expect, type Browser, type Page } from "@playwright/test";
 
 const MAILPIT_URL = "http://127.0.0.1:55324";
 
@@ -66,4 +66,54 @@ export async function createParty(
   await page.getByRole("button", { name: "Create party" }).click();
   await expect(page.getByRole("heading", { name })).toBeVisible();
   return page.url().split("/admin/")[1];
+}
+
+// Adds teams to a party from the teams page.
+export async function addTeams(page: Page, partyId: string, names: string[]) {
+  await page.goto(`/admin/${partyId}/teams`);
+  for (const name of names) {
+    await page.getByLabel("Name").fill(name);
+    await page.getByRole("button", { name: "Add a team" }).click();
+    await expect(
+      page.getByRole("list", { name: "Teams" }).getByText(name),
+    ).toBeVisible();
+  }
+}
+
+// Runs a lifecycle step from the settings page ("Open the party", "Start
+// now" or "End now"), confirming the dialog.
+export async function lifecycle(page: Page, partyId: string, step: string) {
+  await page.goto(`/admin/${partyId}/settings`);
+  await page.getByRole("button", { name: step }).click();
+  await page.getByRole("dialog").getByRole("button", { name: step }).click();
+  await expect(page.getByRole("dialog")).toBeHidden();
+}
+
+// Reads the join code from the party overview.
+export async function joinCode(page: Page, partyId: string) {
+  await page.goto(`/admin/${partyId}`);
+  return (await page
+    .locator("dt", { hasText: "Join code" })
+    .locator("+ dd")
+    .textContent())!;
+}
+
+// Joins a party as a player in a fresh phone-sized browser context.
+export async function joinAsPlayer(
+  browser: Browser,
+  code: string,
+  name: string,
+) {
+  const context = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    hasTouch: true,
+  });
+  const page = await context.newPage();
+  await page.goto("/");
+  await page.getByLabel("Party code").fill(code.toLowerCase());
+  await page.getByRole("button", { name: "Join", exact: true }).click();
+  await page.getByLabel("Your name").fill(name);
+  await page.getByRole("button", { name: /^Join / }).click();
+  await expect(page).toHaveURL(/\/p\/[0-9a-f-]+$/);
+  return page;
 }

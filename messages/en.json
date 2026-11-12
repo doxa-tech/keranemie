@@ -11,7 +11,10 @@
   "Home": {
     "title": "Keranemie",
     "tagline": "Challenges for your event.",
-    "organize": "Organize a party"
+    "organize": "Organize a party",
+    "codeLabel": "Party code",
+    "codePlaceholder": "CODE",
+    "join": "Join"
   },
   "Login": {
     "title": "Organizer sign-in",
@@ -201,5 +204,29 @@
       "invalid": "Please check the fields.",
       "flash": "A flash challenge needs a start and a duration between 1 and 1440 minutes."
     }
+  },
+  "Join": {
+    "nameLabel": "Your name",
+    "nameHint": "Other players will see it.",
+    "confirm": "Join {party}",
+    "notFoundTitle": "Party not found",
+    "notFound": "No party has this code. Check it and try again.",
+    "notOpen": "This party isn't open yet. Try again a bit later.",
+    "ended": "This party is over.",
+    "back": "Back",
+    "errors": {
+      "invalid": "Enter a name of 30 characters or less.",
+      "duplicateName": "Someone already has this name. Pick another one.",
+      "closed": "This party isn't open to new players.",
+      "noTeams": "This party has no teams yet. Ask the organizer.",
+      "failed": "Something went wrong. Try again."
+    }
+  },
+  "Player": {
+    "yourTeam": "Your team",
+    "startsIn": "The party starts in",
+    "waitingHint": "Challenges will appear here when the party starts. Keep this page open.",
+    "live": "The party has started!",
+    "ended": "The party is over. Thanks for playing!"
   }
 }

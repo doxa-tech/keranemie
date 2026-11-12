@@ -11,7 +11,10 @@
   "Home": {
     "title": "Keranemie",
     "tagline": "Des défis pour votre événement.",
-    "organize": "Organiser une partie"
+    "organize": "Organiser une partie",
+    "codeLabel": "Code de la partie",
+    "codePlaceholder": "CODE",
+    "join": "Rejoindre"
   },
   "Login": {
     "title": "Connexion organisateur",
@@ -201,5 +204,29 @@
       "invalid": "Vérifiez les champs.",
       "flash": "Un défi flash a besoin d'un début et d'une durée entre 1 et 1440 minutes."
     }
+  },
+  "Join": {
+    "nameLabel": "Votre nom",
+    "nameHint": "Les autres joueurs le verront.",
+    "confirm": "Rejoindre {party}",
+    "notFoundTitle": "Partie introuvable",
+    "notFound": "Aucune partie n'a ce code. Vérifiez-le et réessayez.",
+    "notOpen": "Cette partie n'est pas encore ouverte. Réessayez un peu plus tard.",
+    "ended": "Cette partie est terminée.",
+    "back": "Retour",
+    "errors": {
+      "invalid": "Saisissez un nom de 30 caractères maximum.",
+      "duplicateName": "Quelqu'un a déjà ce nom. Choisissez-en un autre.",
+      "closed": "Cette partie n'accepte pas de nouveaux joueurs.",
+      "noTeams": "Cette partie n'a pas encore d'équipe. Demandez à l'organisateur.",
+      "failed": "Une erreur est survenue. Réessayez."
+    }
+  },
+  "Player": {
+    "yourTeam": "Votre équipe",
+    "startsIn": "La partie commence dans",
+    "waitingHint": "Les défis apparaîtront ici au début de la partie. Gardez cette page ouverte.",
+    "live": "La partie a commencé !",
+    "ended": "La partie est terminée. Merci d'avoir joué !"
   }
 }
