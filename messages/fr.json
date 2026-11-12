@@ -6,7 +6,9 @@
     "copied": "Copié",
     "copyFailed": "Copie impossible. Sélectionnez le texte et copiez-le.",
     "moveUp": "Monter",
-    "moveDown": "Descendre"
+    "moveDown": "Descendre",
+    "close": "Fermer",
+    "daysShort": "j"
   },
   "Home": {
     "title": "Keranemie",
@@ -360,5 +362,13 @@
     "approvedBody": "+{points} points !",
     "rejectedTitle": "Participation refusée",
     "rejectedBody": "Jetez un œil et réessayez."
+  },
+  "Errors": {
+    "title": "Une erreur est survenue",
+    "description": "Vérifiez votre connexion et réessayez.",
+    "retry": "Réessayer",
+    "notFoundTitle": "Page introuvable",
+    "notFound": "Cette page n'existe pas ou ne vous est pas accessible.",
+    "home": "Retour à l'accueil"
   }
 }

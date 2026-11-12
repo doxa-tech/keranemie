@@ -6,9 +6,9 @@ See [start.md](start.md) for the functional spec.
 
 | Concern | Choice | Why |
 |---|---|---|
-| Framework | **Next.js** (App Router, TypeScript) | One codebase for player app, admin app and API (Server Actions / Route Handlers) |
+| Framework | **Next.js 16** (App Router, TypeScript), Cache Components off | One codebase for player app, admin app and API (Server Actions / Route Handlers). Every page depends on the user, so there is no static shell to cache |
 | Database | **Supabase Postgres** | Relational data, views for scores, constraints |
-| Local development | **Supabase CLI** (`supabase start`, runs in Docker) | Database, auth, storage and real-time locally |
+| Local development | **Supabase CLI** (`supabase start`, runs in Docker, ports 553xx, Edge Functions off) | Database, auth, storage and real-time locally |
 | ORM / migrations | **Drizzle** | Typed schema in TS, SQL migrations in the repo |
 | Admin auth | **Supabase Auth**, email magic link | No passwords; the same email is used for admin invitations |
 | Player auth | **Supabase anonymous sign-in** | Players get a real user id without an account; the session lives on the device |
@@ -17,7 +17,8 @@ See [start.md](start.md) for the functional spec.
 | Scheduled jobs | **pg_cron** + **pg_net** (Postgres extensions in Supabase) | Every minute, calls the app to send flash challenge notifications |
 | Push notifications | **Web Push** (`web-push`, VAPID keys) + service worker | Works in the browser and the installed PWA |
 | UI | **Tailwind CSS** + **shadcn/ui** | Fast, accessible mobile UI |
-| i18n | **next-intl** (fr, en) | Locale from the device, with an in-app switch |
+| i18n | **next-intl** (fr, en), no locale in URLs | Locale from a cookie set by the in-app switch, else the device language. Dates use the device time zone, stored in a cookie by the browser |
+| Tests | **Vitest** (game rules), **Playwright** (end-to-end flows against local Supabase) | |
 | Image resize | `browser-image-compression` (client side, max 1600px, JPEG) | Smaller uploads on mobile networks |
 | QR code | `qrcode` | Join link → QR, shown full screen |
 
@@ -28,7 +29,8 @@ Hosting and deployment are out of scope for now.
 ### Principles
 
 - **All writes go through the server** (Server Actions), which check that the caller is an admin of the party or a player in it. Clients never write to tables directly.
-- **Real-time is a signal, not data**: after a write, the server broadcasts a small event (`submission.created`, `submission.reviewed`, `challenge.updated`, …) on the `party:{id}` channel. Clients refetch what they display. This avoids exposing tables through Realtime and keeps one source of truth.
+- **Real-time is a signal, not data**: after a write, the server broadcasts a small event (`submission.created`, `submission.reviewed`, `challenge.updated`, …) on the public `party:{id}` channel. Clients refetch what they display, grouping bursts of events into one refresh. Events carry no content (at most a player id and a review status), so the channel being public only reveals that something happened. Tables are never exposed through Realtime.
+- **Game rules are pure functions** in `src/lib/game/` (status, availability, validation, team assignment, notification timing), unit-tested and shared by the server and the UI.
 - **Time-based state is computed, not stored**: party status and flash challenge availability are derived from timestamps. No job is needed to "start" or "end" something. A job is only used to send push notifications.
 
 ## Data model
@@ -178,7 +180,10 @@ Automatic validation:
 | endpoint | text unique | |
 | p256dh | text | |
 | auth | text | |
+| locale | text | Language of the notifications for this device |
 | created_at | timestamptz | |
+
+A device has one subscription: when it joins another party, the subscription moves to the new player.
 
 ### Scores (SQL views)
 
@@ -189,24 +194,31 @@ For ~50 players, computing these on each read is fast enough; no cached totals n
 
 ## Background work
 
-- **Flash challenge notification**: a pg_cron job runs every minute and calls `POST /api/jobs/flash-notifications` through pg_net, authenticated with a shared secret header. The handler picks the flash challenges that have started, aren't hidden, belong to a live party and have `start_notified_at` null. For each, it sets `start_notified_at`, sends web push to all players of the party, and broadcasts `challenge.started`. Setting `start_notified_at` first makes the job safe to run twice. Notifications can be up to a minute late.
+- **Flash challenge notification**: a pg_cron job runs every minute and calls `POST /api/jobs/flash-notifications` through pg_net, authenticated with a shared secret header (`CRON_SECRET`). The extensions are enabled by a migration; the job itself is scheduled per environment, because it needs the app URL and the secret (locally in `supabase/seed.sql`). The handler picks the flash challenges that have started, aren't hidden, belong to a live party and have `start_notified_at` null. For each, it sets `start_notified_at`, sends web push to all players of the party, and broadcasts `challenge.started`. Setting `start_notified_at` first makes the job safe to run twice. Notifications can be up to a minute late.
 - **"Launch now"**: the Server Action sends the notification directly instead of waiting for the job.
-- **Review notification**: sent directly from the review Server Action (web push + broadcast).
+- **Review notification**: sent directly from the review Server Action (web push + broadcast). Later point changes are not pushed.
+- **Pages refresh themselves** at the next scheduled change (party start or end, flash challenge start or end), so availability is right even without an event.
 
 ## Routes
 
 | Path | Who | Content |
 |---|---|---|
-| `/` | everyone | Enter a join code; link to admin sign-in |
+| `/` | everyone | Enter a join code (returning players go to their party); link to admin sign-in |
 | `/join/[code]` | player | Party info, display name, confirm |
-| `/p/[partyId]` | player | Challenges (available, done), scores |
-| `/p/[partyId]/challenges/[id]` | player | Challenge detail and submission form |
+| `/p/[partyId]` | player | Waiting screen before the start; then time left, scores, challenges to do and done |
+| `/p/[partyId]/challenges/[challengeId]` | player | Challenge detail and submission form |
 | `/p/[partyId]/leaderboard` | player | Teams and players ranking |
 | `/p/[partyId]/feed` | player | Approved submissions |
-| `/admin` | admin | My parties, create a party |
-| `/admin/[partyId]` | admin | Live dashboard |
-| `/admin/[partyId]/settings` | admin | Party, teams, challenges, admins |
-| `/admin/[partyId]/review` | admin | Review queue |
-| `/admin/[partyId]/gallery` | admin | Photo gallery |
-| `/admin/[partyId]/share` | admin | Code and QR code, full screen |
+| `/admin/login` | admin | Magic link sign-in |
+| `/auth/confirm` | admin | Magic link landing; accepts pending invitations |
+| `/admin` | admin | My parties |
+| `/admin/new` | admin | Create a party |
+| `/admin/[partyId]` | admin | Live dashboard: counts, rankings, flash challenges, activity, move players, bonus points |
+| `/admin/[partyId]/review` | admin | Review queue, recently reviewed |
+| `/admin/[partyId]/challenges` (`/new`, `/[challengeId]`) | admin | Challenges: list, create, edit, hide, reorder, launch now |
+| `/admin/[partyId]/teams` | admin | Teams |
+| `/admin/[partyId]/gallery` | admin | Photo gallery, filters by team and challenge |
+| `/admin/[partyId]/settings` | admin | Party details, lifecycle, admins and invitations, deletion |
+| `/admin/[partyId]/share` | admin | Code, link and QR code, full screen |
 | `/invite/[token]` | admin | Accept an admin invitation |
+| `POST /api/jobs/flash-notifications` | scheduler | Announce flash challenges that started |

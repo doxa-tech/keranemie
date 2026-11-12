@@ -32,6 +32,7 @@ export function TeamForm({
   defaultColorIndex?: number;
 }) {
   const t = useTranslations("Teams");
+  const tc = useTranslations("Common");
   const [open, setOpen] = useState(false);
 
   if (!team) {
@@ -48,7 +49,7 @@ export function TeamForm({
       <DialogTrigger render={<Button variant="ghost" size="sm" />}>
         {triggerLabel}
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent closeLabel={tc("close")}>
         <DialogHeader>
           <DialogTitle>{t("editTitle", { name: team.name })}</DialogTitle>
         </DialogHeader>

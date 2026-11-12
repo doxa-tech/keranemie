@@ -81,7 +81,12 @@ export default async function TeamsPage({
           <CardDescription>{t("addDescription")}</CardDescription>
         </CardHeader>
         <CardContent>
-          <TeamForm partyId={partyId} defaultColorIndex={rows.length} />
+          {/* Remounted after each new team to suggest the next color. */}
+          <TeamForm
+            key={rows.length}
+            partyId={partyId}
+            defaultColorIndex={rows.length}
+          />
         </CardContent>
       </Card>
     </div>

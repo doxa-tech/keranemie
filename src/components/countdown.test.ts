@@ -14,4 +14,9 @@ describe("formatDuration", () => {
   it("shows hours when needed", () => {
     expect(formatDuration(3_725_000)).toBe("1:02:05");
   });
+
+  it("shows days beyond 24 hours", () => {
+    expect(formatDuration(3 * 86_400_000 + 3_725_000)).toBe("3d 01:02:05");
+    expect(formatDuration(86_400_000, "j")).toBe("1j 00:00:00");
+  });
 });

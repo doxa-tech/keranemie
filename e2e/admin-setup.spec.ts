@@ -17,6 +17,13 @@ test("an admin sets up teams, challenges and opens the party", async ({
       page.getByRole("list", { name: "Teams" }).getByText(name),
     ).toBeVisible();
   }
+  // Each new team gets the next color of the palette.
+  const badges = page.getByRole("list", { name: "Teams" }).locator("span[style]");
+  const colors = await badges.evaluateAll((els) =>
+    els.map((el) => (el as HTMLElement).style.backgroundColor),
+  );
+  expect(new Set(colors).size).toBe(2);
+
   await page.getByLabel("Name").fill("Foxes");
   await page.getByRole("button", { name: "Add a team" }).click();
   await expect(

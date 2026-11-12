@@ -41,7 +41,7 @@ export function ConfirmButton({
       <DialogTrigger render={<Button variant={variant} size={size} />}>
         {label}
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent closeLabel={t("close")}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           {description && <DialogDescription>{description}</DialogDescription>}

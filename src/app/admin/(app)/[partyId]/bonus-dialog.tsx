@@ -26,6 +26,7 @@ export function BonusDialog({
   players: { id: string; displayName: string }[];
 }) {
   const t = useTranslations("Dashboard.bonus");
+  const tc = useTranslations("Common");
   const [open, setOpen] = useState(false);
   const [state, formAction, pending] = useActionState<BonusState, FormData>(
     async (prev, formData) => {
@@ -44,7 +45,7 @@ export function BonusDialog({
       <DialogTrigger render={<Button variant="outline" />}>
         {t("open")}
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent closeLabel={tc("close")}>
         <DialogHeader>
           <DialogTitle>{t("title")}</DialogTitle>
         </DialogHeader>

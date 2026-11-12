@@ -6,7 +6,9 @@
     "copied": "Copied",
     "copyFailed": "Couldn't copy. Select the text and copy it manually.",
     "moveUp": "Move up",
-    "moveDown": "Move down"
+    "moveDown": "Move down",
+    "close": "Close",
+    "daysShort": "d"
   },
   "Home": {
     "title": "Keranemie",
@@ -360,5 +362,13 @@
     "approvedBody": "+{points} points!",
     "rejectedTitle": "Submission rejected",
     "rejectedBody": "Have a look and try again."
+  },
+  "Errors": {
+    "title": "Something went wrong",
+    "description": "Check your connection and try again.",
+    "retry": "Try again",
+    "notFoundTitle": "Page not found",
+    "notFound": "This page doesn't exist or isn't available to you.",
+    "home": "Back to home"
   }
 }

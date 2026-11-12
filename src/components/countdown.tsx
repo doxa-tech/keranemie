@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useSyncExternalStore } from "react";
+import { useTranslations } from "next-intl";
 
 // Ticks every second until `to`, then refreshes the page once so the
 // server renders the new state (party started, flash challenge over...).
@@ -12,6 +13,7 @@ export function Countdown({
   to: string;
   refreshAtEnd?: boolean;
 }) {
+  const t = useTranslations("Common");
   const router = useRouter();
   const target = new Date(to).getTime();
   const now = useSyncExternalStore(subscribeToClock, Date.now, () => null);
@@ -27,7 +29,7 @@ export function Countdown({
 
   return (
     <time dateTime={to} className="font-mono tabular-nums">
-      {remaining === null ? "--:--" : formatDuration(remaining)}
+      {remaining === null ? "--:--" : formatDuration(remaining, t("daysShort"))}
     </time>
   );
 }
@@ -48,12 +50,17 @@ function subscribeToClock(onTick: () => void) {
   };
 }
 
-export function formatDuration(ms: number): string {
+// "05:09", "1:02:05", or with days ("3d 04:02:05") beyond 24 hours.
+export function formatDuration(ms: number, daysUnit = "d"): string {
   const total = Math.ceil(ms / 1000);
-  const hours = Math.floor(total / 3600);
+  const days = Math.floor(total / 86400);
+  const hours = Math.floor((total % 86400) / 3600);
   const minutes = Math.floor((total % 3600) / 60);
   const seconds = total % 60;
   const pad = (n: number) => String(n).padStart(2, "0");
+  if (days > 0) {
+    return `${days}${daysUnit} ${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+  }
   return hours > 0
     ? `${hours}:${pad(minutes)}:${pad(seconds)}`
     : `${pad(minutes)}:${pad(seconds)}`;
