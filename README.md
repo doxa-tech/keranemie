@@ -4,7 +4,7 @@ Challenges (a scavenger hunt) for a group during an event. See [specifications/]
 
 ## Stack
 
-Next.js (App Router, TypeScript, Tailwind) + Supabase (Postgres, Auth, Storage, Realtime), with Drizzle for the schema and queries.
+Next.js (App Router, TypeScript, Tailwind, shadcn/ui) + Supabase (Postgres, Auth, Storage, Realtime), with Drizzle for the schema and queries, next-intl for French and English, Vitest and Playwright for tests.
 
 ## Getting started
 
@@ -13,10 +13,11 @@ Requirements: Node.js 22+, Docker, the [Supabase CLI](https://supabase.com/docs/
 ```bash
 npm install
 npm run supabase:start        # local Supabase in Docker, applies migrations
-npx supabase status           # copy the publishable key
-cp .env.example .env.local    # then fill NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+cp .env.example .env.local    # then fill the empty values (see comments in the file)
 npm run dev
 ```
+
+Local Supabase uses the 553xx ports (not the default 543xx), so it can run next to other Supabase projects. Edge Functions are disabled: the app doesn't use them.
 
 - App: http://localhost:3000
 - Supabase Studio: http://127.0.0.1:55323
@@ -32,6 +33,18 @@ npm run db:generate -- --name <change>   # writes supabase/migrations/<timestamp
 npm run db:reset                         # recreates the local database from all migrations
 ```
 
+## Code layout
+
+| Path | Content |
+|---|---|
+| `src/lib/game/` | Game rules as pure functions (status, availability, scoring, team assignment), unit-tested |
+| `src/lib/auth.ts` | Auth guards for Server Components and Server Actions |
+| `src/lib/realtime/` | Party events: broadcast from the server, `usePartyEvents` on the client |
+| `src/lib/supabase/` | Supabase clients (browser, server, secret-key admin, session proxy) |
+| `src/db/` | Drizzle schema and connection |
+| `messages/` | Translations (`en.json`, `fr.json`): every string goes in both |
+| `e2e/` | Playwright tests |
+
 ## Scripts
 
 | Script | Description |
@@ -40,6 +53,8 @@ npm run db:reset                         # recreates the local database from all
 | `build` | Production build |
 | `lint` | ESLint |
 | `typecheck` | Generate route types, then run TypeScript |
+| `test` / `test:watch` | Unit tests (Vitest) |
+| `e2e` | End-to-end tests (Playwright); needs local Supabase running |
 | `supabase:start` / `supabase:stop` | Start / stop the local Supabase stack |
 | `db:generate` | Generate a migration from the Drizzle schema |
 | `db:reset` | Reset the local database and apply all migrations |

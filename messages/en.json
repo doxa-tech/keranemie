@@ -1,0 +1,11 @@
+{
+  "Common": {
+    "appName": "Keranemie",
+    "tagline": "Challenges for your event.",
+    "language": "Language"
+  },
+  "Home": {
+    "title": "Keranemie",
+    "tagline": "Challenges for your event."
+  }
+}
