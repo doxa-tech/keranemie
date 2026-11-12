@@ -14,6 +14,7 @@ export type PartyFormState = {
   // Submitted text values, so the form keeps them after an error (React
   // resets form fields after each action).
   values?: { name: string; description: string };
+  saved?: boolean;
 };
 
 export function submittedValues(formData: FormData) {

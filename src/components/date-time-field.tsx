@@ -11,11 +11,13 @@ export function DateTimeField({
   name,
   defaultValue = "",
   required,
+  onLocalChange,
 }: {
   id: string;
   name: string;
   defaultValue?: string;
   required?: boolean;
+  onLocalChange?: (local: string) => void;
 }) {
   const [local, setLocal] = useState(defaultValue);
   // The UTC value depends on the device time zone: only computed in the
@@ -32,7 +34,10 @@ export function DateTimeField({
         id={id}
         type="datetime-local"
         value={local}
-        onChange={(e) => setLocal(e.target.value)}
+        onChange={(e) => {
+          setLocal(e.target.value);
+          onLocalChange?.(e.target.value);
+        }}
         required={required}
       />
       {mounted && (

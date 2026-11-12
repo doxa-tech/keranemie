@@ -1,7 +1,12 @@
 {
   "Common": {
     "appName": "Keranemie",
-    "switchLanguage": "Switch to English"
+    "switchLanguage": "Switch to English",
+    "cancel": "Annuler",
+    "copied": "Copié",
+    "copyFailed": "Copie impossible. Sélectionnez le texte et copiez-le.",
+    "moveUp": "Monter",
+    "moveDown": "Descendre"
   },
   "Home": {
     "title": "Keranemie",
@@ -40,11 +45,15 @@
     "errors": {
       "invalid": "Vérifiez les champs.",
       "endsBeforeStart": "La fin doit être après le début."
-    }
+    },
+    "saved": "Enregistré."
   },
   "PartyNav": {
     "overview": "Aperçu",
-    "share": "Partager"
+    "share": "Partager",
+    "challenges": "Défis",
+    "teams": "Équipes",
+    "settings": "Réglages"
   },
   "PartyOverview": {
     "joinCode": "Code",
@@ -59,5 +68,138 @@
     "fullScreen": "Plein écran",
     "exitFullScreen": "Quitter le plein écran",
     "qrAlt": "QR code pour rejoindre la partie"
+  },
+  "Settings": {
+    "details": "Informations",
+    "save": "Enregistrer",
+    "lifecycle": {
+      "title": "Statut de la partie",
+      "status": {
+        "draft": "Brouillon : les joueurs ne peuvent pas encore rejoindre. Ouvrez la partie quand les équipes et les défis sont prêts.",
+        "open": "Ouverte : les joueurs peuvent rejoindre. Les défis apparaissent à l'heure de début.",
+        "live": "En cours : les joueurs relèvent les défis.",
+        "ended": "Terminée : plus de participations. Les résultats restent visibles."
+      },
+      "open": "Ouvrir la partie",
+      "openTitle": "Ouvrir la partie ?",
+      "openDescription": "Les joueurs pourront rejoindre avec le code. Les défis restent masqués jusqu'à l'heure de début.",
+      "startNow": "Démarrer maintenant",
+      "startNowTitle": "Démarrer la partie maintenant ?",
+      "startNowDescription": "L'heure de début devient maintenant et les défis deviennent disponibles.",
+      "endNow": "Terminer maintenant",
+      "endNowTitle": "Terminer la partie maintenant ?",
+      "endNowDescription": "Les joueurs ne pourront plus participer. C'est définitif."
+    },
+    "admins": {
+      "title": "Admins",
+      "description": "Les admins configurent la partie et valident les participations.",
+      "you": "vous",
+      "owner": "Propriétaire",
+      "remove": "Retirer",
+      "removeTitle": "Retirer {email} des admins ?",
+      "pending": "Invitations en attente",
+      "pendingHint": "Envoyez le lien d'invitation à la personne. Elle se connecte avec l'e-mail invité pour accepter.",
+      "expires": "Expire le {date}",
+      "copyLink": "Copier le lien",
+      "revoke": "Révoquer",
+      "revokeTitle": "Révoquer l'invitation de {email} ?",
+      "inviteLabel": "Inviter un admin par e-mail",
+      "invite": "Inviter",
+      "invited": "Invitation créée pour {email}. Copiez son lien ci-dessous.",
+      "errors": {
+        "invalid": "Saisissez un e-mail valide.",
+        "alreadyAdmin": "Cette personne est déjà admin."
+      }
+    },
+    "danger": {
+      "title": "Supprimer la partie",
+      "description": "Supprime la partie avec ses équipes, défis, joueurs et participations.",
+      "delete": "Supprimer la partie",
+      "deleteTitle": "Supprimer cette partie ?",
+      "deleteDescription": "Tout est supprimé définitivement."
+    }
+  },
+  "Invite": {
+    "title": "Invitation admin",
+    "ok": "Invitation acceptée.",
+    "accepted": "Cette invitation a déjà été acceptée.",
+    "expired": "Cette invitation a expiré. Demandez-en une nouvelle au propriétaire de la partie.",
+    "wrongEmail": "Cette invitation a été envoyée à un autre e-mail. Vous êtes connecté avec {email}.",
+    "notFound": "Cette invitation n'existe pas ou a été révoquée.",
+    "back": "Retour à mes parties"
+  },
+  "Teams": {
+    "title": "Équipes",
+    "empty": "Aucune équipe. Ajoutez-en au moins une avant d'ouvrir la partie.",
+    "players": "{count, plural, =0 {Aucun joueur} one {# joueur} other {# joueurs}}",
+    "edit": "Modifier",
+    "assignmentHint": "Les nouveaux joueurs rejoignent l'équipe qui a le moins de joueurs.",
+    "add": "Ajouter une équipe",
+    "addDescription": "Donnez un nom et une couleur à chaque équipe.",
+    "editTitle": "Modifier {name}",
+    "name": "Nom",
+    "emoji": "Emoji (facultatif)",
+    "color": "Couleur",
+    "colorOption": "Couleur {index}",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "deleteTitle": "Supprimer l'équipe {name} ?",
+    "errors": {
+      "invalid": "Vérifiez les champs.",
+      "duplicateName": "Une autre équipe porte déjà ce nom.",
+      "hasPlayers": "Cette équipe a des joueurs. Déplacez-les d'abord dans une autre équipe."
+    }
+  },
+  "Challenges": {
+    "title": "Défis",
+    "add": "Nouveau défi",
+    "empty": "Aucun défi pour l'instant.",
+    "points": "{count, plural, one {# point} other {# points}}",
+    "hidden": "Masqué",
+    "flash": {
+      "upcoming": "Flash : à venir",
+      "running": "Flash : en cours",
+      "over": "Flash : terminé"
+    },
+    "visible": "Visible",
+    "edit": "Modifier",
+    "launchNow": "Lancer maintenant",
+    "launchNowTitle": "Lancer « {title} » maintenant ?",
+    "launchNowDescription": "Il sera disponible pendant {minutes} minutes à partir de maintenant.",
+    "delete": "Supprimer",
+    "deleteTitle": "Supprimer « {title} » ?",
+    "deleteDescription": "Ses participations et leurs points sont aussi supprimés.",
+    "create": "Créer le défi",
+    "editTitle": "Modifier « {title} »",
+    "editPointsHint": "Modifier les points ne change pas les participations déjà validées.",
+    "save": "Enregistrer"
+  },
+  "ChallengeForm": {
+    "title": "Titre",
+    "description": "Consignes",
+    "type": "Type",
+    "types": {
+      "photo": "Photo",
+      "text": "Texte"
+    },
+    "points": "Points",
+    "validation": "Validation",
+    "validations": {
+      "manual": "Un admin valide",
+      "auto": "Automatique"
+    },
+    "expectedAnswer": "Réponse attendue (facultatif)",
+    "expectedAnswerHint": "En validation automatique, les réponses sont comparées sans tenir compte des majuscules ni des accents. Une mauvaise réponse est refusée et le joueur peut réessayer.",
+    "kind": "Disponibilité",
+    "kinds": {
+      "permanent": "Permanent : toute la partie",
+      "flash": "Flash : pour une durée limitée"
+    },
+    "flashStartsAt": "Début",
+    "flashDurationMin": "Durée (minutes)",
+    "errors": {
+      "invalid": "Vérifiez les champs.",
+      "flash": "Un défi flash a besoin d'un début et d'une durée entre 1 et 1440 minutes."
+    }
   }
 }

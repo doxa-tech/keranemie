@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { PartyStatusBadge } from "@/components/party-status-badge";
 import { requirePartyAdmin } from "@/lib/auth";
 import { partyStatus } from "@/lib/game/party";
+import { isUuid } from "@/lib/ids";
 import { getParty } from "@/lib/parties";
 import { PartyNav } from "./party-nav";
 
@@ -30,17 +31,14 @@ export default async function PartyLayout({
           partyId={partyId}
           links={[
             { href: "", label: t("overview") },
+            { href: "/challenges", label: t("challenges") },
+            { href: "/teams", label: t("teams") },
+            { href: "/settings", label: t("settings") },
             { href: "/share", label: t("share") },
           ]}
         />
       </div>
       {children}
     </div>
-  );
-}
-
-function isUuid(value: string) {
-  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
-    value,
   );
 }

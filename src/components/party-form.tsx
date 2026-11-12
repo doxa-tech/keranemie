@@ -73,6 +73,11 @@ export function PartyForm({
           />
         </div>
       </div>
+      {state.saved && (
+        <p className="text-muted-foreground text-sm" role="status">
+          {t("saved")}
+        </p>
+      )}
       {state.error && (
         <p className="text-destructive text-sm" role="alert">
           {t(`errors.${state.error}`)}

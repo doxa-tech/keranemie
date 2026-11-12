@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { sendMagicLink, type LoginState } from "./actions";
 
-export function LoginForm() {
+export function LoginForm({ next }: { next?: string }) {
   const t = useTranslations("Login");
   const [state, action, pending] = useActionState<LoginState, FormData>(
     sendMagicLink,
@@ -27,6 +27,7 @@ export function LoginForm() {
 
   return (
     <form action={action} className="space-y-4">
+      {next && <input type="hidden" name="next" value={next} />}
       <div className="space-y-2">
         <Label htmlFor="email">{t("email")}</Label>
         <Input

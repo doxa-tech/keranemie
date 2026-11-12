@@ -9,14 +9,16 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { getUser } from "@/lib/auth";
+import { safePath } from "@/lib/safe-path";
 import { LoginForm } from "./login-form";
 
 export default async function LoginPage({
   searchParams,
 }: PageProps<"/admin/login">) {
-  const { error } = await searchParams;
+  const { error, next } = await searchParams;
+  const nextPath = safePath(next);
   const user = await getUser();
-  if (user && !user.isAnonymous) redirect("/admin");
+  if (user && !user.isAnonymous) redirect(nextPath ?? "/admin");
   const t = await getTranslations("Login");
 
   return (
@@ -35,7 +37,7 @@ export default async function LoginPage({
               {t("linkError")}
             </p>
           )}
-          <LoginForm />
+          <LoginForm next={nextPath} />
         </CardContent>
       </Card>
     </main>

@@ -1,7 +1,12 @@
 {
   "Common": {
     "appName": "Keranemie",
-    "switchLanguage": "Passer en français"
+    "switchLanguage": "Passer en français",
+    "cancel": "Cancel",
+    "copied": "Copied",
+    "copyFailed": "Couldn't copy. Select the text and copy it manually.",
+    "moveUp": "Move up",
+    "moveDown": "Move down"
   },
   "Home": {
     "title": "Keranemie",
@@ -40,11 +45,15 @@
     "errors": {
       "invalid": "Please check the fields.",
       "endsBeforeStart": "The end must be after the start."
-    }
+    },
+    "saved": "Saved."
   },
   "PartyNav": {
     "overview": "Overview",
-    "share": "Share"
+    "share": "Share",
+    "challenges": "Challenges",
+    "teams": "Teams",
+    "settings": "Settings"
   },
   "PartyOverview": {
     "joinCode": "Join code",
@@ -59,5 +68,138 @@
     "fullScreen": "Full screen",
     "exitFullScreen": "Exit full screen",
     "qrAlt": "QR code to join the party"
+  },
+  "Settings": {
+    "details": "Details",
+    "save": "Save",
+    "lifecycle": {
+      "title": "Party status",
+      "status": {
+        "draft": "Draft: players can't join yet. Open the party when teams and challenges are ready.",
+        "open": "Open: players can join. Challenges appear at the start time.",
+        "live": "Live: players are completing challenges.",
+        "ended": "Ended: no more submissions. Results stay visible."
+      },
+      "open": "Open the party",
+      "openTitle": "Open the party?",
+      "openDescription": "Players will be able to join with the code. Challenges stay hidden until the start time.",
+      "startNow": "Start now",
+      "startNowTitle": "Start the party now?",
+      "startNowDescription": "The start time becomes now and challenges become available.",
+      "endNow": "End now",
+      "endNowTitle": "End the party now?",
+      "endNowDescription": "Players won't be able to submit anymore. This can't be undone."
+    },
+    "admins": {
+      "title": "Admins",
+      "description": "Admins can configure the party and review submissions.",
+      "you": "you",
+      "owner": "Owner",
+      "remove": "Remove",
+      "removeTitle": "Remove {email} from the admins?",
+      "pending": "Pending invitations",
+      "pendingHint": "Send the invitation link to the person. They sign in with the invited email to accept.",
+      "expires": "Expires {date}",
+      "copyLink": "Copy link",
+      "revoke": "Revoke",
+      "revokeTitle": "Revoke the invitation for {email}?",
+      "inviteLabel": "Invite an admin by email",
+      "invite": "Invite",
+      "invited": "Invitation created for {email}. Copy its link below.",
+      "errors": {
+        "invalid": "Enter a valid email.",
+        "alreadyAdmin": "This person is already an admin."
+      }
+    },
+    "danger": {
+      "title": "Delete the party",
+      "description": "Deletes the party with its teams, challenges, players and submissions.",
+      "delete": "Delete party",
+      "deleteTitle": "Delete this party?",
+      "deleteDescription": "Everything is deleted for good. This can't be undone."
+    }
+  },
+  "Invite": {
+    "title": "Admin invitation",
+    "ok": "Invitation accepted.",
+    "accepted": "This invitation has already been accepted.",
+    "expired": "This invitation has expired. Ask the party owner for a new one.",
+    "wrongEmail": "This invitation was sent to another email. You're signed in as {email}.",
+    "notFound": "This invitation doesn't exist or was revoked.",
+    "back": "Back to my parties"
+  },
+  "Teams": {
+    "title": "Teams",
+    "empty": "No teams yet. Add at least one before opening the party.",
+    "players": "{count, plural, =0 {No players} one {# player} other {# players}}",
+    "edit": "Edit",
+    "assignmentHint": "New players join the team with the fewest players.",
+    "add": "Add a team",
+    "addDescription": "Give each team a name and a color.",
+    "editTitle": "Edit {name}",
+    "name": "Name",
+    "emoji": "Emoji (optional)",
+    "color": "Color",
+    "colorOption": "Color {index}",
+    "save": "Save",
+    "delete": "Delete",
+    "deleteTitle": "Delete the team {name}?",
+    "errors": {
+      "invalid": "Please check the fields.",
+      "duplicateName": "Another team already has this name.",
+      "hasPlayers": "This team has players. Move them to another team first."
+    }
+  },
+  "Challenges": {
+    "title": "Challenges",
+    "add": "New challenge",
+    "empty": "No challenges yet.",
+    "points": "{count, plural, one {# point} other {# points}}",
+    "hidden": "Hidden",
+    "flash": {
+      "upcoming": "Flash: upcoming",
+      "running": "Flash: running",
+      "over": "Flash: over"
+    },
+    "visible": "Visible",
+    "edit": "Edit",
+    "launchNow": "Launch now",
+    "launchNowTitle": "Launch “{title}” now?",
+    "launchNowDescription": "It will be available for {minutes} minutes, starting now.",
+    "delete": "Delete",
+    "deleteTitle": "Delete “{title}”?",
+    "deleteDescription": "Its submissions and their points are deleted too.",
+    "create": "Create challenge",
+    "editTitle": "Edit “{title}”",
+    "editPointsHint": "Changing the points doesn't affect submissions already approved.",
+    "save": "Save"
+  },
+  "ChallengeForm": {
+    "title": "Title",
+    "description": "Instructions",
+    "type": "Type",
+    "types": {
+      "photo": "Photo",
+      "text": "Text"
+    },
+    "points": "Points",
+    "validation": "Validation",
+    "validations": {
+      "manual": "An admin approves",
+      "auto": "Automatic"
+    },
+    "expectedAnswer": "Expected answer (optional)",
+    "expectedAnswerHint": "With automatic validation, answers are compared ignoring case and accents. Wrong answers are rejected and the player can try again.",
+    "kind": "Availability",
+    "kinds": {
+      "permanent": "Permanent: the whole party",
+      "flash": "Flash: for a limited time"
+    },
+    "flashStartsAt": "Start",
+    "flashDurationMin": "Duration (minutes)",
+    "errors": {
+      "invalid": "Please check the fields.",
+      "flash": "A flash challenge needs a start and a duration between 1 and 1440 minutes."
+    }
   }
 }

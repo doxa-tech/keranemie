@@ -30,7 +30,7 @@ The admin gets the code and the QR code to share access to the party (displayabl
 
 ### Admins
 
-The creator of a party can invite other admins by email. All admins have the same rights on the party, except that only the creator can remove admins or delete the party.
+The creator of a party can invite other admins by email. The app doesn't send the invitation email: it creates an invitation link that the creator shares. The invited person signs in with the invited email (from the link, or later: pending invitations are accepted at sign-in). Invitations expire after 7 days. All admins have the same rights on the party, except that only the creator can invite or remove admins and delete the party.
 
 ### Teams
 

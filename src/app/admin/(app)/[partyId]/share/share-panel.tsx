@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, useState, useSyncExternalStore } from "react";
+import { useRef, useSyncExternalStore } from "react";
 import { useTranslations } from "next-intl";
-import { toast } from "sonner";
+import { CopyButton } from "@/components/copy-button";
 import { Button } from "@/components/ui/button";
 
 // Code, link and QR code, with a full-screen mode for projection.
@@ -24,17 +24,6 @@ export function SharePanel({
     () => document.fullscreenElement !== null,
     () => false,
   );
-  const [copying, setCopying] = useState(false);
-
-  async function copyLink() {
-    setCopying(true);
-    try {
-      await navigator.clipboard.writeText(url);
-      toast.success(t("copied"));
-    } finally {
-      setCopying(false);
-    }
-  }
 
   return (
     <div
@@ -63,9 +52,7 @@ export function SharePanel({
       <p className="text-muted-foreground text-sm break-all">{url}</p>
       <div className="flex flex-wrap justify-center gap-2">
         {!isFullScreen && (
-          <Button variant="outline" onClick={copyLink} disabled={copying}>
-            {t("copyLink")}
-          </Button>
+          <CopyButton value={url} label={t("copyLink")} />
         )}
         <Button
           variant={isFullScreen ? "ghost" : "default"}
