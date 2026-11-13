@@ -233,7 +233,10 @@
     "flashEndsIn": "Flash · ends in",
     "myScore": "My score",
     "teamScore": "{team} score",
-    "endsIn": "Ends in"
+    "endsIn": "Ends in",
+    "teammates": "Teammates",
+    "you": "you",
+    "aloneInTeam": "No one else in this team yet."
   },
   "Challenge": {
     "back": "All challenges",

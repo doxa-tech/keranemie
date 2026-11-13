@@ -20,6 +20,7 @@ export function PlayerEvents({
     [
       "party.updated",
       "team.updated",
+      "player.joined",
       "player.updated",
       "challenge.updated",
       "challenge.started",

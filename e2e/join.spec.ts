@@ -38,6 +38,14 @@ test("players join an open party and are spread over the teams", async ({
     bob.getByText(anaTeam === "Foxes" ? "Owls" : "Foxes").first(),
   ).toBeVisible();
 
+  // Players see who is in their team, kept up to date when players move.
+  await expect(ana.getByText("No one else in this team yet.")).toBeVisible();
+  await page.goto(`/admin/${partyId}`);
+  await page.getByLabel("Team of Bob").selectOption({ label: anaTeam });
+  const anaTeammates = ana.getByRole("list", { name: "Teammates" });
+  await expect(anaTeammates.getByText("Ana (you)")).toBeVisible();
+  await expect(anaTeammates.getByText("Bob")).toBeVisible();
+
   // Names are unique within the party, ignoring case.
   const other = await browser.newPage();
   await other.goto(`/join/${code}`);
@@ -53,6 +61,9 @@ test("players join an open party and are spread over the teams", async ({
   // Starting the party updates the waiting screen without a reload.
   await lifecycle(page, partyId, "Start now");
   await expect(ana.getByText("My score")).toBeVisible();
+  await expect(
+    ana.getByRole("list", { name: "Teammates" }).getByText("Bob"),
+  ).toBeVisible();
 
   // Players can't open the admin pages.
   await ana.goto(`/admin/${partyId}`);

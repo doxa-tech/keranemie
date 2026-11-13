@@ -6,12 +6,13 @@ import { RefreshAt } from "@/components/refresh-at";
 import { nextScheduledChange } from "@/lib/game/challenge";
 import { partyStatus } from "@/lib/game/party";
 import { getParty } from "@/lib/parties";
-import { getPlayerTeam } from "@/lib/players";
+import { getPlayerTeam, listTeammates } from "@/lib/players";
 import { getPlayerScore, getTeamScore } from "@/lib/scores";
 import { listPlayerChallenges } from "@/lib/submissions";
 import { ChallengeList } from "./challenge-list";
 import { PushPrompt } from "./push-prompt";
 import { ScoreCard } from "./score-card";
+import { Teammates } from "./teammates";
 
 export default async function PlayerHome({
   params,
@@ -19,7 +20,10 @@ export default async function PlayerHome({
   const { partyId } = await params;
   const player = await requirePlayer(partyId);
   const party = (await getParty(partyId))!;
-  const team = await getPlayerTeam(player.teamId);
+  const [team, teammates] = await Promise.all([
+    getPlayerTeam(player.teamId),
+    listTeammates(partyId, player.teamId),
+  ]);
   const t = await getTranslations("Player");
   const format = await getFormatter();
   const status = partyStatus(party, new Date());
@@ -31,6 +35,11 @@ export default async function PlayerHome({
         <div className="space-y-2">
           <p className="text-muted-foreground">{t("yourTeam")}</p>
           {team && <TeamBadge team={team} className="px-4 py-1.5 text-lg" />}
+          <Teammates
+            players={teammates}
+            playerId={player.id}
+            className="justify-center pt-2"
+          />
         </div>
         <div className="space-y-1">
           <p className="text-muted-foreground">{t("startsIn")}</p>
@@ -81,6 +90,10 @@ export default async function PlayerHome({
         teamName={team?.name ?? ""}
       />
       <ChallengeList partyId={partyId} items={items} />
+      <section className="space-y-2">
+        <h2 className="font-semibold">{t("teammates")}</h2>
+        <Teammates players={teammates} playerId={player.id} />
+      </section>
     </div>
   );
 }

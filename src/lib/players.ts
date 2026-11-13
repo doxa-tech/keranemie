@@ -1,5 +1,5 @@
 import "server-only";
-import { desc, eq } from "drizzle-orm";
+import { and, asc, desc, eq } from "drizzle-orm";
 import { db } from "@/db";
 import { parties, players, teams } from "@/db/schema";
 import { partyStatus } from "@/lib/game/party";
@@ -19,4 +19,13 @@ export async function findActivePlayerParty(userId: string) {
 export async function getPlayerTeam(teamId: string) {
   const [team] = await db.select().from(teams).where(eq(teams.id, teamId));
   return team;
+}
+
+// Everyone in a team (the player included), in the order they joined.
+export async function listTeammates(partyId: string, teamId: string) {
+  return db
+    .select({ id: players.id, displayName: players.displayName })
+    .from(players)
+    .where(and(eq(players.partyId, partyId), eq(players.teamId, teamId)))
+    .orderBy(asc(players.createdAt), asc(players.id));
 }
