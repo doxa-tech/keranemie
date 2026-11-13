@@ -293,9 +293,10 @@
     "noTeams": "Aucune équipe.",
     "playerCount": "{count, plural, =0 {aucun joueur} one {# joueur} other {# joueurs}}",
     "flashChallenges": "Défis flash",
-    "noFlash": "Aucun défi flash à venir ou en cours.",
+    "noFlash": "Aucun défi flash pour l'instant.",
     "flashStartsIn": "commence dans",
     "flashEndsIn": "se termine dans",
+    "flashOver": "terminé",
     "playerRanking": "Joueurs",
     "noPlayers": "Aucun joueur. Partagez le code pour qu'ils rejoignent.",
     "moveTo": "Équipe de {name}",
@@ -314,6 +315,30 @@
       "submit": "Enregistrer",
       "saved": "Points enregistrés",
       "invalid": "Vérifiez les champs. Les points ne peuvent pas valoir 0."
+    },
+    "launch": {
+      "open": "Lancer",
+      "title": "Lancer « {title} »",
+      "description": "Il sera disponible pendant {minutes} minutes à partir de son début.",
+      "when": "Début",
+      "whens": {
+        "now": "Maintenant",
+        "in": "Après un minuteur",
+        "at": "À une heure précise"
+      },
+      "delayMin": "Dans combien de minutes",
+      "startsAt": "Heure de début",
+      "submit": {
+        "now": "Lancer maintenant",
+        "in": "Démarrer le minuteur",
+        "at": "Programmer"
+      },
+      "started": "Défi flash lancé",
+      "scheduled": "Défi flash programmé",
+      "errors": {
+        "invalid": "Vérifiez les champs. Le minuteur doit être entre 1 et 1440 minutes.",
+        "past": "Cette heure est déjà passée."
+      }
     }
   },
   "Gallery": {

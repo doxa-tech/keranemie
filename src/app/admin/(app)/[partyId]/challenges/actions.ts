@@ -11,7 +11,7 @@ import {
   parseChallengeForm,
   type ChallengeFormState,
 } from "@/lib/challenge-form";
-import { announceFlashChallenge } from "@/lib/flash-notifications";
+import { launchFlash } from "@/lib/flash-notifications";
 import { moveInList } from "@/lib/ordering";
 import { broadcast } from "@/lib/realtime/server";
 
@@ -82,18 +82,7 @@ export async function setChallengeHidden(
 // Starts a flash challenge now, for its configured duration.
 export async function launchFlashNow(partyId: string, challengeId: string) {
   await requirePartyAdmin(partyId);
-  await db
-    .update(challenges)
-    .set({ flashStartsAt: new Date(), startNotifiedAt: null, hidden: false })
-    .where(
-      and(
-        eq(challenges.id, challengeId),
-        eq(challenges.partyId, partyId),
-        eq(challenges.kind, "flash"),
-      ),
-    );
-  // Announced now rather than by the next run of the scheduled job.
-  await announceFlashChallenge(challengeId);
+  await launchFlash(partyId, challengeId, new Date());
   await afterChallengesChange(partyId);
 }
 

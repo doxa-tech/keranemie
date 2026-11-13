@@ -53,7 +53,7 @@ The admin configures the challenges. Each challenge has:
 
 Availability:
 - **Permanent challenges**: available for the whole duration of the party
-- **Flash challenges**: available for a limited time. Has a start time and a duration. Players are notified when it starts. It can also be triggered manually from the dashboard ("launch now").
+- **Flash challenges**: available for a limited time. Has a start time and a duration. Players are notified when it starts. It can also be launched from the dashboard: now, after a timer ("in 10 minutes"), or at a set time. Launching restarts it for its full duration, even if it already ran.
 
 Challenges can be reordered, edited, and hidden while the party is live. Editing the points of a challenge does not change already approved submissions.
 
@@ -63,7 +63,7 @@ The admin sees a live dashboard with:
 - Leaderboard (teams, and players)
 - Activity feed of all submissions
 - Review queue for submissions waiting for manual validation
-- Upcoming and running flash challenges, with countdowns
+- Flash challenges, with countdowns, and launching them (now, after a timer, or at a set time)
 - Players list per team
 
 ### Review

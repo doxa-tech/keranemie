@@ -293,9 +293,10 @@
     "noTeams": "No teams yet.",
     "playerCount": "{count, plural, =0 {no players} one {# player} other {# players}}",
     "flashChallenges": "Flash challenges",
-    "noFlash": "No upcoming or running flash challenges.",
+    "noFlash": "No flash challenges yet.",
     "flashStartsIn": "starts in",
     "flashEndsIn": "ends in",
+    "flashOver": "over",
     "playerRanking": "Players",
     "noPlayers": "No players yet. Share the code to let them join.",
     "moveTo": "Team of {name}",
@@ -314,6 +315,30 @@
       "submit": "Save",
       "saved": "Points saved",
       "invalid": "Please check the fields. Points can't be 0."
+    },
+    "launch": {
+      "open": "Launch",
+      "title": "Launch “{title}”",
+      "description": "It will be available for {minutes} minutes from its start.",
+      "when": "Start",
+      "whens": {
+        "now": "Now",
+        "in": "After a timer",
+        "at": "At a set time"
+      },
+      "delayMin": "Minutes from now",
+      "startsAt": "Start time",
+      "submit": {
+        "now": "Launch now",
+        "in": "Start timer",
+        "at": "Schedule"
+      },
+      "started": "Flash challenge launched",
+      "scheduled": "Flash challenge scheduled",
+      "errors": {
+        "invalid": "Please check the fields. The timer is between 1 and 1440 minutes.",
+        "past": "This time has already passed."
+      }
     }
   },
   "Gallery": {

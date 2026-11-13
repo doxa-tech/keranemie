@@ -73,3 +73,58 @@ test("flash challenges are announced once, when launched or scheduled", async ({
 
   await expect(todo.getByText("Scheduled flash")).toBeVisible();
 });
+
+test("flash challenges are launched from the dashboard after a timer, at a time or now", async ({
+  browser,
+  page,
+}) => {
+  const { partyId, code } = await setUpLiveParty(page, []);
+  await page.goto(`/admin/${partyId}/challenges/new`);
+  await page.getByLabel("Title").fill("Dashboard flash");
+  await page.getByLabel("Availability").selectOption("flash");
+  await page.getByLabel("Start").fill("2030-07-01T20:00");
+  await page.getByLabel("Duration (minutes)").fill("10");
+  await page.getByRole("button", { name: "Create challenge" }).click();
+  await expect(page).toHaveURL(new RegExp(`/admin/${partyId}/challenges$`));
+
+  const player = await joinAsPlayer(browser, code, "Ana");
+  await page.goto(`/admin/${partyId}`);
+  const flashes = page.getByRole("list", { name: "Flash challenges" });
+  const dialog = page.getByRole("dialog");
+
+  // After a timer.
+  await flashes.getByRole("button", { name: "Launch" }).click();
+  await dialog.getByLabel("Start").selectOption("in");
+  await dialog.getByLabel("Minutes from now").fill("5");
+  await dialog.getByRole("button", { name: "Start timer" }).click();
+  await expect(page.getByText("Flash challenge scheduled")).toBeVisible();
+  await expect(flashes.getByText(/starts in (04:5\d|05:00)/)).toBeVisible();
+
+  // At a set time, which can't be in the past.
+  const localIn = (minutes: number) =>
+    page.evaluate((m) => {
+      const d = new Date(Date.now() + m * 60_000);
+      const pad = (n: number) => String(n).padStart(2, "0");
+      return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }, minutes);
+  await flashes.getByRole("button", { name: "Launch" }).click();
+  await dialog.getByLabel("Start", { exact: true }).selectOption("at");
+  await dialog.getByLabel("Start time").fill(await localIn(-10));
+  await dialog.getByRole("button", { name: "Schedule" }).click();
+  await expect(dialog.getByText("This time has already passed.")).toBeVisible();
+  await dialog.getByLabel("Start time").fill(await localIn(120));
+  await dialog.getByRole("button", { name: "Schedule" }).click();
+  await expect(page.getByText("Flash challenge scheduled")).toBeVisible();
+  await expect(flashes.getByText(/starts in 1:(59|58):\d\d/)).toBeVisible();
+  await expect(player.getByText("Nothing to do right now.")).toBeVisible();
+
+  // Now: the player is told right away.
+  await flashes.getByRole("button", { name: "Launch" }).click();
+  await dialog.getByRole("button", { name: "Launch now" }).click();
+  await expect(flashes.getByText(/ends in (09:5\d|10:00)/)).toBeVisible();
+  await expect(flashes.getByRole("button", { name: "Launch" })).toHaveCount(0);
+  await expect(player.getByText("A flash challenge just started!")).toBeVisible();
+  await expect(
+    player.getByRole("list", { name: "To do" }).getByText("Dashboard flash"),
+  ).toBeVisible();
+});

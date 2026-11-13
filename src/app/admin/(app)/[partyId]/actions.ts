@@ -6,6 +6,8 @@ import { z } from "zod";
 import { db } from "@/db";
 import { bonuses, players, teams } from "@/db/schema";
 import { requirePartyAdmin } from "@/lib/auth";
+import { parseFlashLaunch } from "@/lib/flash-launch";
+import { launchFlash } from "@/lib/flash-notifications";
 import { broadcast } from "@/lib/realtime/server";
 
 // Points follow the player: team scores add up current players' scores.
@@ -74,4 +76,29 @@ export async function grantBonus(
   await broadcast(partyId, { type: "score.updated" });
   refresh();
   return { saved: Date.now() };
+}
+
+export type LaunchFlashState = {
+  error?: "invalid" | "past";
+  saved?: number;
+  started?: boolean;
+};
+
+// Starts a flash challenge now, after a timer or at a given time.
+export async function scheduleFlash(
+  partyId: string,
+  challengeId: string,
+  _prev: LaunchFlashState,
+  formData: FormData,
+): Promise<LaunchFlashState> {
+  await requirePartyAdmin(partyId);
+  const now = new Date();
+  const launch = parseFlashLaunch(formData, now);
+  if ("error" in launch) return { error: launch.error };
+  if (!(await launchFlash(partyId, challengeId, launch.startsAt))) {
+    return { error: "invalid" };
+  }
+  await broadcast(partyId, { type: "challenge.updated" });
+  refresh();
+  return { saved: Date.now(), started: launch.startsAt <= now };
 }

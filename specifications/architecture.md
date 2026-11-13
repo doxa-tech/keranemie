@@ -124,7 +124,7 @@ Derived status:
 | validation | enum `auto` \| `manual` | |
 | expected_answer | text null | Text type only |
 | kind | enum `permanent` \| `flash` | |
-| flash_starts_at | timestamptz null | Flash only. "Launch now" sets it to `now()` |
+| flash_starts_at | timestamptz null | Flash only. Launching from the dashboard sets it to `now()`, `now()` + a timer, or a set time |
 | flash_duration_min | int null | Flash only |
 | start_notified_at | timestamptz null | Flash only. Set when the start notification is sent; reset when `flash_starts_at` changes |
 | position | int | Display order |
@@ -213,7 +213,7 @@ For ~50 players, computing these on each read is fast enough; no cached totals n
 | `/auth/confirm` | admin | Magic link landing; accepts pending invitations |
 | `/admin` | admin | My parties |
 | `/admin/new` | admin | Create a party |
-| `/admin/[partyId]` | admin | Live dashboard: counts, rankings, flash challenges, activity, move players, bonus points |
+| `/admin/[partyId]` | admin | Live dashboard: counts, rankings, flash challenges (launch now, after a timer or at a time), activity, move players, bonus points |
 | `/admin/[partyId]/review` | admin | Review queue, recently reviewed |
 | `/admin/[partyId]/challenges` (`/new`, `/[challengeId]`) | admin | Challenges: list, create, edit, hide, reorder, launch now |
 | `/admin/[partyId]/teams` | admin | Teams |

@@ -33,7 +33,32 @@ export async function announceStartedFlashChallenges(now = new Date()) {
   return announced;
 }
 
-// Announces one flash challenge right away (used by "Launch now").
+// (Re)starts a flash challenge at `startsAt`, for its configured duration,
+// and makes it visible. A start that is already due is announced right away
+// rather than by the next run of the scheduled job. The caller checks that
+// the user is an admin of the party.
+export async function launchFlash(
+  partyId: string,
+  challengeId: string,
+  startsAt: Date,
+) {
+  const [launched] = await db
+    .update(challenges)
+    .set({ flashStartsAt: startsAt, startNotifiedAt: null, hidden: false })
+    .where(
+      and(
+        eq(challenges.id, challengeId),
+        eq(challenges.partyId, partyId),
+        eq(challenges.kind, "flash"),
+      ),
+    )
+    .returning({ id: challenges.id });
+  if (!launched) return false;
+  await announceFlashChallenge(challengeId);
+  return true;
+}
+
+// Announces one flash challenge right away, if its start is due.
 export async function announceFlashChallenge(challengeId: string) {
   const now = new Date();
   const [row] = await db

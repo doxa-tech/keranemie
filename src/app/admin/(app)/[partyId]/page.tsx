@@ -6,6 +6,7 @@ import { PartyEvents } from "@/components/party-events";
 import { RefreshAt } from "@/components/refresh-at";
 import { SubmissionStatus } from "@/components/submission-status";
 import { TeamBadge } from "@/components/team-badge";
+import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { db } from "@/db";
 import { challenges } from "@/db/schema";
@@ -13,6 +14,7 @@ import {
   flashEndsAt,
   flashState,
   nextScheduledChange,
+  type FlashState,
 } from "@/lib/game/challenge";
 import { partyStatus } from "@/lib/game/party";
 import {
@@ -23,6 +25,7 @@ import {
 } from "@/lib/leaderboard";
 import { getParty } from "@/lib/parties";
 import { BonusDialog } from "./bonus-dialog";
+import { LaunchFlashDialog } from "./launch-flash-dialog";
 import { TeamSelect } from "./team-select";
 
 export default async function Dashboard({
@@ -31,6 +34,7 @@ export default async function Dashboard({
   const { partyId } = await params;
   const party = (await getParty(partyId))!;
   const t = await getTranslations("Dashboard");
+  const tc = await getTranslations("Challenges");
   const format = await getFormatter();
   const now = new Date();
   const status = partyStatus(party, now);
@@ -46,10 +50,11 @@ export default async function Dashboard({
       .where(eq(challenges.partyId, partyId))
       .orderBy(asc(challenges.flashStartsAt)),
   ]);
+  // Running first, then upcoming, then over (any of them can be relaunched).
   const flashes = challengeRows
-    .filter((c) => c.kind === "flash" && !c.hidden)
+    .filter((c) => c.kind === "flash")
     .map((c) => ({ ...c, state: flashState(c, now), endsAt: flashEndsAt(c) }))
-    .filter((c) => c.state !== "over");
+    .sort((a, b) => flashOrder[a.state] - flashOrder[b.state]);
   const nextChange = nextScheduledChange(challengeRows, party.endsAt, now);
   const teamOptions = teams.map(({ id, name }) => ({ id, name }));
   const { pending, approved } = counts;
@@ -64,6 +69,8 @@ export default async function Dashboard({
           "player.joined",
           "player.updated",
           "score.updated",
+          "challenge.updated",
+          "challenge.started",
         ]}
       />
       <RefreshAt
@@ -143,17 +150,33 @@ export default async function Dashboard({
           {flashes.length === 0 ? (
             <p className="text-muted-foreground text-sm">{t("noFlash")}</p>
           ) : (
-            <ul className="divide-y rounded-xl border">
+            <ul className="divide-y rounded-xl border" aria-label={t("flashChallenges")}>
               {flashes.map((c) => (
                 <li key={c.id} className="flex items-center gap-2 px-3 py-2 text-sm">
                   <span className="min-w-0 flex-1 truncate">{c.title}</span>
-                  <span className="text-muted-foreground">
-                    {c.state === "running" ? t("flashEndsIn") : t("flashStartsIn")}{" "}
-                    <Countdown
-                      to={(c.state === "running" ? c.endsAt! : c.flashStartsAt!).toISOString()}
-                      refreshAtEnd={false}
+                  {c.hidden ? (
+                    <Badge variant="destructive">{tc("hidden")}</Badge>
+                  ) : c.state === "over" ? (
+                    <span className="text-muted-foreground">{t("flashOver")}</span>
+                  ) : (
+                    <span className="text-muted-foreground">
+                      {c.state === "running" ? t("flashEndsIn") : t("flashStartsIn")}{" "}
+                      <Countdown
+                        to={(c.state === "running" ? c.endsAt! : c.flashStartsAt!).toISOString()}
+                        refreshAtEnd={false}
+                      />
+                    </span>
+                  )}
+                  {c.state !== "running" && (
+                    <LaunchFlashDialog
+                      partyId={partyId}
+                      challenge={{
+                        id: c.id,
+                        title: c.title,
+                        flashDurationMin: c.flashDurationMin,
+                      }}
                     />
-                  </span>
+                  )}
                 </li>
               ))}
             </ul>
@@ -227,6 +250,12 @@ export default async function Dashboard({
     </div>
   );
 }
+
+const flashOrder: Record<FlashState, number> = {
+  running: 0,
+  upcoming: 1,
+  over: 2,
+};
 
 function Stat({
   label,
