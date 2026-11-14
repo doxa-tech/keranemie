@@ -39,6 +39,25 @@ export function LoginForm({ next }: { next?: string }) {
           defaultValue={state.email}
         />
       </div>
+      {state.status === "password" && (
+        <div className="space-y-2">
+          <Label htmlFor="password">{t("password")}</Label>
+          <Input
+            id="password"
+            name="password"
+            type="password"
+            autoComplete="current-password"
+            required
+            autoFocus
+          />
+          <p className="text-muted-foreground text-xs">{t("passwordHint")}</p>
+        </div>
+      )}
+      {state.wrongPassword && (
+        <p className="text-destructive text-sm" role="alert">
+          {t("wrongPassword")}
+        </p>
+      )}
       {state.status === "error" && (
         <p className="text-destructive text-sm" role="alert">
           {t("error")}

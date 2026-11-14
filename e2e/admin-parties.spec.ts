@@ -1,5 +1,10 @@
 import { expect, test } from "@playwright/test";
-import { loginAsAdmin } from "./helpers";
+import {
+  ADMIN_PASSWORD,
+  loginAsAdmin,
+  magicLinkFor,
+  uniqueEmail,
+} from "./helpers";
 
 test("an admin signs in, creates a party and shares it", async ({ page }) => {
   await page.goto("/admin");
@@ -35,6 +40,54 @@ test("an admin signs in, creates a party and shares it", async ({ page }) => {
 
   await page.getByRole("button", { name: "Sign out" }).click();
   await expect(page).toHaveURL(/\/admin\/login$/);
+});
+
+test("a new admin account needs the admin password", async ({ page }) => {
+  const email = uniqueEmail();
+  await page.goto("/admin/login");
+  await page.getByLabel("Email").fill(email);
+  await page.getByRole("button", { name: "Send me a link" }).click();
+  const password = page.getByLabel("Admin password");
+  await expect(password).toBeVisible();
+
+  await password.fill("not the password");
+  await page.getByRole("button", { name: "Send me a link" }).click();
+  await expect(page.getByText("Wrong password.")).toBeVisible();
+  await expect(page.getByText("Check your email")).toHaveCount(0);
+
+  await page.getByLabel("Admin password").fill(ADMIN_PASSWORD);
+  await page.getByRole("button", { name: "Send me a link" }).click();
+  await expect(page.getByText("Check your email")).toBeVisible();
+
+  // Once created, the account signs in with the email only. (Retried:
+  // Supabase sends at most one email per address per second.)
+  await expect(async () => {
+    await page.goto("/admin/login");
+    await page.getByLabel("Email").fill(email);
+    await page.getByRole("button", { name: "Send me a link" }).click();
+    await expect(page.getByText("Check your email")).toBeVisible({
+      timeout: 2000,
+    });
+  }).toPass();
+  await expect(page.getByLabel("Admin password")).toHaveCount(0);
+});
+
+test("the sign-in link works in another browser", async ({ browser, page }) => {
+  // Asked on one device (e.g. a laptop), opened on another (a phone).
+  const email = await loginAsAdmin(page);
+  await page.getByRole("button", { name: "Sign out" }).click();
+  await page.getByLabel("Email").fill(email);
+  await page.getByRole("button", { name: "Send me a link" }).click();
+  await expect(page.getByText("Check your email")).toBeVisible();
+
+  const phone = await browser.newPage();
+  await expect
+    .poll(async () => {
+      const link = await magicLinkFor(email);
+      await phone.goto(link);
+      return new URL(phone.url()).pathname;
+    })
+    .toBe("/admin");
 });
 
 test("an admin can't open another admin's party", async ({ browser }) => {

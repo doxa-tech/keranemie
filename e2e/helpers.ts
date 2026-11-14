@@ -2,6 +2,8 @@ import { expect, type Browser, type Page } from "@playwright/test";
 import postgres from "postgres";
 
 const MAILPIT_URL = "http://127.0.0.1:55324";
+// ADMIN_SIGNUP_PASSWORD of the local dev server (.env.example).
+export const ADMIN_PASSWORD = "local-dev-admin-password";
 
 // A unique email per test, so tests don't share admins or parties.
 export function uniqueEmail(prefix = "admin") {
@@ -10,7 +12,7 @@ export function uniqueEmail(prefix = "admin") {
 
 // Waits for the latest email sent to `to` in the local Mailpit inbox and
 // returns the first link in it.
-async function magicLinkFor(to: string): Promise<string> {
+export async function magicLinkFor(to: string): Promise<string> {
   let link: string | undefined;
   await expect
     .poll(
@@ -44,7 +46,15 @@ export async function loginAsAdmin(
   }
   await page.getByLabel("Email").fill(email);
   await page.getByRole("button", { name: "Send me a link" }).click();
-  await expect(page.getByText("Check your email")).toBeVisible();
+  // New accounts need the admin password; existing and invited ones don't.
+  const sent = page.getByText("Check your email");
+  const password = page.getByLabel("Admin password");
+  await expect(sent.or(password)).toBeVisible();
+  if (await password.isVisible()) {
+    await password.fill(ADMIN_PASSWORD);
+    await page.getByRole("button", { name: "Send me a link" }).click();
+  }
+  await expect(sent).toBeVisible();
   await page.goto(await magicLinkFor(email));
   await expect(page).toHaveURL(new RegExp(`${expectedPath}$`));
   return email;

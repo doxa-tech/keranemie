@@ -4,7 +4,7 @@ Keranemie is a mobile-first web app to organize challenges (a scavenger hunt) fo
 
 ## Roles
 
-- **Admin**: creates and runs a party. Has an account (email sign-in). A party can have several admins.
+- **Admin**: creates and runs a party. Has an account (email sign-in). Creating a new admin account requires a shared admin password, set by whoever hosts the app; invited admins don't need it. A party can have several admins.
 - **Player**: joins a party with a code. No account needed; the session is kept on the device so the player can come back.
 
 ## Party lifecycle

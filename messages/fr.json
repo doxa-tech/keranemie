@@ -20,13 +20,16 @@
   },
   "Login": {
     "title": "Connexion organisateur",
-    "description": "Nous vous envoyons un lien de connexion par e-mail. Pas de mot de passe.",
+    "description": "Nous vous envoyons un lien de connexion par e-mail.",
     "email": "E-mail",
     "submit": "Envoyer le lien",
     "error": "Impossible d'envoyer le lien. Vérifiez l'adresse et réessayez.",
     "sentTitle": "Consultez vos e-mails",
     "sentBody": "Nous avons envoyé un lien de connexion à {email}.",
-    "linkError": "Ce lien de connexion est invalide ou a expiré. Demandez-en un nouveau."
+    "linkError": "Ce lien de connexion est invalide ou a expiré. Demandez-en un nouveau.",
+    "password": "Mot de passe administrateur",
+    "passwordHint": "Cette adresse n'a pas encore de compte organisateur. Saisissez le mot de passe administrateur pour en créer un.",
+    "wrongPassword": "Mot de passe incorrect."
   },
   "Admin": {
     "signOut": "Se déconnecter",

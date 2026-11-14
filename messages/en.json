@@ -20,13 +20,16 @@
   },
   "Login": {
     "title": "Organizer sign-in",
-    "description": "We'll email you a sign-in link. No password needed.",
+    "description": "We'll email you a sign-in link.",
     "email": "Email",
     "submit": "Send me a link",
     "error": "We couldn't send the link. Check the address and try again.",
     "sentTitle": "Check your email",
     "sentBody": "We sent a sign-in link to {email}.",
-    "linkError": "This sign-in link is invalid or has expired. Ask for a new one."
+    "linkError": "This sign-in link is invalid or has expired. Ask for a new one.",
+    "password": "Admin password",
+    "passwordHint": "This email has no organizer account yet. Enter the admin password to create one.",
+    "wrongPassword": "Wrong password."
   },
   "Admin": {
     "signOut": "Sign out",

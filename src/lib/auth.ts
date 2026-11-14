@@ -4,12 +4,15 @@ import { redirect } from "next/navigation";
 import { cache } from "react";
 import { db } from "@/db";
 import { partyAdmins, players } from "@/db/schema";
+import { isAnyPartyAdmin } from "@/lib/admin-access";
 import { createClient } from "@/lib/supabase/server";
 
 export type SessionUser = {
   id: string;
   email: string | null;
   isAnonymous: boolean;
+  // Approved with the admin password (see admin-access.ts).
+  approvedAdmin: boolean;
 };
 
 // The signed-in user for this request, or null. Cached per request.
@@ -22,13 +25,22 @@ export const getUser = cache(async (): Promise<SessionUser | null> => {
     id: claims.sub,
     email: claims.email ?? null,
     isAnonymous: claims.is_anonymous ?? false,
+    approvedAdmin: claims.app_metadata?.admin === true,
   };
 });
 
-// Admins are users signed in with their email (players are anonymous).
-export async function requireAdmin(): Promise<SessionUser> {
+// Admins are users signed in with their email (players are anonymous),
+// approved with the admin password or admin of a party.
+export const getAdmin = cache(async (): Promise<SessionUser | null> => {
   const user = await getUser();
-  if (!user || user.isAnonymous) redirect("/admin/login");
+  if (!user || user.isAnonymous) return null;
+  if (user.approvedAdmin || (await isAnyPartyAdmin(user.id))) return user;
+  return null;
+});
+
+export async function requireAdmin(): Promise<SessionUser> {
+  const user = await getAdmin();
+  if (!user) redirect("/admin/login");
   return user;
 }
 

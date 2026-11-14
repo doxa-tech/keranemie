@@ -36,7 +36,12 @@ export async function joinParty(
       console.error("Anonymous sign-in failed", error?.message);
       return { error: "failed", name: rawName };
     }
-    user = { id: data.user.id, email: null, isAnonymous: true };
+    user = {
+      id: data.user.id,
+      email: null,
+      isAnonymous: true,
+      approvedAdmin: false,
+    };
   }
   const userId = user.id;
 

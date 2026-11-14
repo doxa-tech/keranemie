@@ -10,7 +10,7 @@ See [start.md](start.md) for the functional spec.
 | Database | **Supabase Postgres** | Relational data, views for scores, constraints |
 | Local development | **Supabase CLI** (`supabase start`, runs in Docker, ports 553xx, Edge Functions off) | Database, auth, storage and real-time locally |
 | ORM / migrations | **Drizzle** | Typed schema in TS, SQL migrations in the repo |
-| Admin auth | **Supabase Auth**, email magic link | No passwords; the same email is used for admin invitations |
+| Admin auth | **Supabase Auth**, email magic link | The same email is used for admin invitations. New admin accounts need the shared `ADMIN_SIGNUP_PASSWORD` once |
 | Player auth | **Supabase anonymous sign-in** | Players get a real user id without an account; the session lives on the device |
 | Photo storage | **Supabase Storage** (private bucket, signed URLs) | Same provider, access tied to auth |
 | Real-time | **Supabase Realtime** (broadcast channel per party) | Dashboard, leaderboard and feed update live |
@@ -209,7 +209,7 @@ For ~50 players, computing these on each read is fast enough; no cached totals n
 | `/p/[partyId]/challenges/[challengeId]` | player | Challenge detail and submission form |
 | `/p/[partyId]/leaderboard` | player | Teams and players ranking |
 | `/p/[partyId]/feed` | player | Approved submissions |
-| `/admin/login` | admin | Magic link sign-in |
+| `/admin/login` | admin | Magic link sign-in; asks for the admin password for a new account |
 | `/auth/confirm` | admin | Magic link landing; accepts pending invitations |
 | `/admin` | admin | My parties |
 | `/admin/new` | admin | Create a party |

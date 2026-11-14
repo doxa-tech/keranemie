@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getUser } from "@/lib/auth";
+import { getAdmin } from "@/lib/auth";
 import { safePath } from "@/lib/safe-path";
 import { LoginForm } from "./login-form";
 
@@ -17,8 +17,7 @@ export default async function LoginPage({
 }: PageProps<"/admin/login">) {
   const { error, next } = await searchParams;
   const nextPath = safePath(next);
-  const user = await getUser();
-  if (user && !user.isAnonymous) redirect(nextPath ?? "/admin");
+  if (await getAdmin()) redirect(nextPath ?? "/admin");
   const t = await getTranslations("Login");
 
   return (

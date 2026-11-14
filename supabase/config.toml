@@ -242,6 +242,15 @@ otp_expiry = 3600
 # admin_email = "admin@email.com"
 # sender_name = "Admin"
 
+# Sign-in links that work on any device (token hash, see the template).
+[auth.email.template.magic_link]
+subject = "Keranemie : lien de connexion · sign-in link"
+content_path = "./supabase/templates/magic-link.html"
+
+[auth.email.template.confirmation]
+subject = "Keranemie : lien de connexion · sign-in link"
+content_path = "./supabase/templates/magic-link.html"
+
 # Uncomment to customize email template
 # [auth.email.template.invite]
 # subject = "You have been invited"

@@ -1,0 +1,11 @@
+<!-- Sign-in email for organizers. The link goes straight to the app with a
+     token hash (verified on the server by /auth/confirm), so it works on any
+     device, not only in the browser that asked for it. RedirectTo always has
+     a query string (see the login action). Paste this same template in the
+     hosted project: Authentication > Emails > Magic link and Confirm signup. -->
+<h2>Keranemie</h2>
+<p>
+  <a href="{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=email">Se connecter · Sign in</a>
+</p>
+<p>Ce lien est valable une heure. · This link is valid for one hour.</p>
+<p>Si vous n'avez rien demandé, ignorez ce message. · If you didn't ask for it, ignore this email.</p>
