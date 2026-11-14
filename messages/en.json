@@ -393,9 +393,7 @@
     "feed": "Feed"
   },
   "Leaderboard": {
-    "teams": "Teams",
-    "players": "Players",
-    "you": "you"
+    "teams": "Teams"
   },
   "Feed": {
     "title": "Feed",

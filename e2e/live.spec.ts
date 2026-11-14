@@ -37,10 +37,13 @@ test("players see reviews, rankings and the feed update live", async ({
   // Bob's feed shows the approved answer, also without a reload.
   await expect(bob.getByText("Knock knock")).toBeVisible();
   await bob.getByRole("link", { name: "Ranking" }).click();
-  const players = bob.getByRole("list", { name: "Players" });
-  await expect(players.getByRole("listitem").first()).toContainText("Ana");
-  await expect(players.getByRole("listitem").first()).toContainText("10");
-  await expect(
-    players.getByRole("listitem").filter({ hasText: "Bob" }),
-  ).toHaveAttribute("aria-current", "true");
+  // Teams only: Ana's team leads, Bob's own team is highlighted, and
+  // there is no ranking of players.
+  const teams = bob.getByRole("list", { name: "Teams" });
+  await expect(teams.getByRole("listitem").first()).toContainText("10");
+  await expect(teams.getByRole("listitem").nth(1)).toHaveAttribute(
+    "aria-current",
+    "true",
+  );
+  await expect(bob.getByRole("list", { name: "Players" })).toHaveCount(0);
 });
