@@ -1,0 +1,2 @@
+ALTER TABLE "challenges" DROP CONSTRAINT "challenges_flash_fields";--> statement-breakpoint
+ALTER TABLE "challenges" ADD CONSTRAINT "challenges_flash_fields" CHECK ("challenges"."kind" = 'permanent' or "challenges"."flash_duration_min" > 0);

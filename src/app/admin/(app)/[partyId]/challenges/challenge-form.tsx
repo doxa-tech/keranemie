@@ -3,6 +3,7 @@
 import { useActionState, useState } from "react";
 import { useTranslations } from "next-intl";
 import { DateTimeField } from "@/components/date-time-field";
+import { DurationField } from "@/components/duration-field";
 import { NativeSelect } from "@/components/native-select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,6 +13,9 @@ import type {
   ChallengeFormState,
   ChallengeFormValues,
 } from "@/lib/challenge-form";
+
+// Quick choices for a flash challenge's duration, in minutes.
+const FLASH_DURATION_PRESETS = [5, 10, 15, 30, 60];
 
 const emptyValues: ChallengeFormValues = {
   title: "",
@@ -150,13 +154,13 @@ function Fields({ values }: { values: ChallengeFormValues }) {
         </NativeSelect>
       </div>
       {kind === "flash" && (
-        <div className="grid gap-4 sm:grid-cols-2">
+        <>
           <div className="space-y-2">
             <Label htmlFor="flashStartsAt">{t("flashStartsAt")}</Label>
             <DateTimeField
               id="flashStartsAt"
               name="flashStartsAt"
-              required
+              label={t("flashStartsAt")}
               defaultValue={values.flashStartsAt}
               onLocalChange={setFlashStartsAtLocal}
             />
@@ -166,21 +170,21 @@ function Fields({ values }: { values: ChallengeFormValues }) {
               name="flashStartsAtLocal"
               value={flashStartsAtLocal}
             />
+            <p className="text-muted-foreground text-xs">
+              {t("flashStartsAtHint")}
+            </p>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="flashDurationMin">{t("flashDurationMin")}</Label>
-            <Input
-              id="flashDurationMin"
+            <Label id="flashDurationMin-label">{t("flashDurationMin")}</Label>
+            <DurationField
               name="flashDurationMin"
-              type="number"
-              inputMode="numeric"
-              min={1}
-              max={1440}
-              required
-              defaultValue={values.flashDurationMin}
+              labelId="flashDurationMin-label"
+              presets={FLASH_DURATION_PRESETS}
+              defaultValue={Number(values.flashDurationMin) || 15}
+              maxMinutes={24 * 60}
             />
           </div>
-        </div>
+        </>
       )}
     </>
   );

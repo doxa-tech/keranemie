@@ -8,7 +8,21 @@
     "moveUp": "Monter",
     "moveDown": "Descendre",
     "close": "Fermer",
-    "daysShort": "j"
+    "daysShort": "j",
+    "timeOf": "{field}, heure",
+    "invalidTime": "Saisissez une heure au format 24 h, par exemple 18:30.",
+    "timePlaceholder": "hh:mm",
+    "dateAndTime": "Saisissez la date et l'heure, ou laissez les deux vides."
+  },
+  "Duration": {
+    "minutes": "{count} min",
+    "hours": "{count} h",
+    "hoursMinutes": "{hours} h {minutes}",
+    "custom": "Autre",
+    "customHours": "Heures",
+    "customMinutes": "Minutes",
+    "outOfRange": "Choisissez une durée entre 1 minute et {max}.",
+    "untilStopped": "Jusqu'à l'arrêt"
   },
   "Home": {
     "title": "Keranemie",
@@ -36,7 +50,9 @@
     "myParties": "Mes parties",
     "newParty": "Nouvelle partie",
     "createParty": "Créer la partie",
-    "noParties": "Aucune partie pour l'instant. Créez-en une pour commencer."
+    "noParties": "Aucune partie pour l'instant. Créez-en une pour commencer.",
+    "startsAtUntilEnded": "{date}, jusqu'à l'arrêt",
+    "startedByHand": "Démarrage à la main"
   },
   "PartyStatus": {
     "draft": "Brouillon",
@@ -49,12 +65,16 @@
     "description": "Description",
     "descriptionHint": "Facultatif. Affichée aux joueurs quand ils rejoignent.",
     "startsAt": "Début",
-    "endsAt": "Fin",
+    "duration": "Durée",
+    "endsAtPreview": "Fin : {date}",
     "errors": {
       "invalid": "Vérifiez les champs.",
-      "endsBeforeStart": "La fin doit être après le début."
+      "duration": "Choisissez une durée entre 1 minute et 14 jours."
     },
-    "saved": "Enregistré."
+    "saved": "Enregistré.",
+    "startsAtHint": "Facultatif. Laissez vide pour la démarrer à la main avec « Démarrer maintenant ».",
+    "durationFromStartPreview": "Commence quand vous appuyez sur « Démarrer maintenant », puis dure ce temps.",
+    "untilEndedPreview": "Dure jusqu'à ce que vous appuyiez sur « Terminer maintenant »."
   },
   "PartyNav": {
     "share": "Partager",
@@ -80,7 +100,7 @@
       "title": "Statut de la partie",
       "status": {
         "draft": "Brouillon : les joueurs ne peuvent pas encore rejoindre. Ouvrez la partie quand les équipes et les défis sont prêts.",
-        "open": "Ouverte : les joueurs peuvent rejoindre. Les défis apparaissent à l'heure de début.",
+        "open": "Ouverte : les joueurs peuvent rejoindre. Les défis apparaissent au début de la partie.",
         "live": "En cours : les joueurs relèvent les défis.",
         "ended": "Terminée : plus de participations. Les résultats restent visibles."
       },
@@ -89,7 +109,7 @@
       "openDescription": "Les joueurs pourront rejoindre avec le code. Les défis restent masqués jusqu'à l'heure de début.",
       "startNow": "Démarrer maintenant",
       "startNowTitle": "Démarrer la partie maintenant ?",
-      "startNowDescription": "L'heure de début devient maintenant et les défis deviennent disponibles.",
+      "startNowDescription": "La partie commence maintenant et les défis deviennent disponibles. Avec une durée prévue, elle se termine après cette durée ; sinon, elle dure jusqu'à ce que vous la terminiez.",
       "endNow": "Terminer maintenant",
       "endNowTitle": "Terminer la partie maintenant ?",
       "endNowDescription": "Les joueurs ne pourront plus participer. C'est définitif."
@@ -163,7 +183,8 @@
     "flash": {
       "upcoming": "Flash : à venir",
       "running": "Flash : en cours",
-      "over": "Flash : terminé"
+      "over": "Flash : terminé",
+      "unscheduled": "Flash : non programmé"
     },
     "visible": "Visible",
     "edit": "Modifier",
@@ -200,11 +221,12 @@
       "flash": "Flash : pour une durée limitée"
     },
     "flashStartsAt": "Début",
-    "flashDurationMin": "Durée (minutes)",
+    "flashDurationMin": "Durée",
     "errors": {
       "invalid": "Vérifiez les champs.",
-      "flash": "Un défi flash a besoin d'un début et d'une durée entre 1 et 1440 minutes."
-    }
+      "flash": "Un défi flash a besoin d'une durée entre 1 minute et 24 heures, et d'un début valide si vous en donnez un."
+    },
+    "flashStartsAtHint": "Facultatif. Laissez vide pour le lancer à la main depuis le tableau de bord."
   },
   "Join": {
     "nameLabel": "Votre nom",
@@ -239,7 +261,8 @@
     "endsIn": "Fin dans",
     "teammates": "Coéquipiers",
     "you": "vous",
-    "aloneInTeam": "Personne d'autre dans cette équipe pour l'instant."
+    "aloneInTeam": "Personne d'autre dans cette équipe pour l'instant.",
+    "startsSoon": "La partie commence bientôt !"
   },
   "Challenge": {
     "back": "Tous les défis",
@@ -345,7 +368,10 @@
         "invalid": "Vérifiez les champs. Le minuteur doit être entre 1 et 1440 minutes.",
         "past": "Cette heure est déjà passée."
       }
-    }
+    },
+    "flashUnscheduled": "non programmé",
+    "waitingForStart": "En attente de « Démarrer maintenant »",
+    "runsUntilEnded": "Jusqu'à ce que vous la terminiez"
   },
   "Gallery": {
     "title": "Photos",

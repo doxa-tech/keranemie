@@ -1,4 +1,4 @@
-import { expect, type Browser, type Page } from "@playwright/test";
+import { expect, type Browser, type Locator, type Page } from "@playwright/test";
 import postgres from "postgres";
 
 const MAILPIT_URL = "http://127.0.0.1:55324";
@@ -60,20 +60,33 @@ export async function loginAsAdmin(
   return email;
 }
 
-// Creates a party from the admin home and returns its id. Times are
-// datetime-local values in the browser's time zone.
+// Fills a date and time field: its date input is labelled `label`, its
+// time input "`label`, time". `value` is "YYYY-MM-DDTHH:mm", local time.
+export async function fillDateTime(
+  scope: Page | Locator,
+  label: string,
+  value: string,
+) {
+  const [date, time] = value.split("T");
+  await scope.getByLabel(label, { exact: true }).fill(date);
+  await scope.getByLabel(`${label}, time`, { exact: true }).fill(time);
+}
+
+// Creates a party from the admin home and returns its id. The start is
+// in the browser's time zone ("" to start it by hand); the duration is one
+// of the quick choices ("Until ended" to end it by hand).
 export async function createParty(
   page: Page,
   {
     name = "Test party",
     startsAt = "2030-07-01T18:00",
-    endsAt = "2030-07-01T23:00",
-  }: { name?: string; startsAt?: string; endsAt?: string } = {},
+    duration = "4 h",
+  }: { name?: string; startsAt?: string; duration?: string } = {},
 ) {
   await page.goto("/admin/new");
   await page.getByLabel("Name").fill(name);
-  await page.getByLabel("Start").fill(startsAt);
-  await page.getByLabel("End").fill(endsAt);
+  if (startsAt) await fillDateTime(page, "Start", startsAt);
+  await page.getByRole("button", { name: duration, exact: true }).click();
   await page.getByRole("button", { name: "Create party" }).click();
   await expect(page.getByRole("heading", { name })).toBeVisible();
   return page.url().split("/admin/")[1];

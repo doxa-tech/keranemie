@@ -39,10 +39,21 @@ export default async function AdminHome() {
                       <PartyStatusBadge status={partyStatus(party, now)} />
                     </div>
                     <CardDescription>
-                      {format.dateTimeRange(party.startsAt, party.endsAt, {
-                        dateStyle: "medium",
-                        timeStyle: "short",
-                      })}
+                      {party.startsAt && party.endsAt
+                        ? format.dateTimeRange(party.startsAt, party.endsAt, {
+                            dateStyle: "medium",
+                            timeStyle: "short",
+                            hourCycle: "h23",
+                          })
+                        : party.startsAt
+                          ? t("startsAtUntilEnded", {
+                              date: format.dateTime(party.startsAt, {
+                                dateStyle: "medium",
+                                timeStyle: "short",
+                                hourCycle: "h23",
+                              }),
+                            })
+                          : t("startedByHand")}
                     </CardDescription>
                   </CardHeader>
                 </Card>

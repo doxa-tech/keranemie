@@ -26,6 +26,7 @@ import {
 import { getParty } from "@/lib/parties";
 import { BonusDialog } from "./bonus-dialog";
 import { LaunchFlashDialog } from "./launch-flash-dialog";
+import { LifecycleButtons } from "./lifecycle-buttons";
 import { TeamSelect } from "./team-select";
 
 export default async function Dashboard({
@@ -50,7 +51,8 @@ export default async function Dashboard({
       .where(eq(challenges.partyId, partyId))
       .orderBy(asc(challenges.flashStartsAt)),
   ]);
-  // Running first, then upcoming, then over (any of them can be relaunched).
+  // Running first, then upcoming, waiting to be launched, and over (any
+  // of them can be (re)launched).
   const flashes = challengeRows
     .filter((c) => c.kind === "flash")
     .map((c) => ({ ...c, state: flashState(c, now), endsAt: flashEndsAt(c) }))
@@ -82,15 +84,24 @@ export default async function Dashboard({
           {t("joinCode")}{" "}
           <span className="font-mono font-semibold">{party.joinCode}</span>
         </span>
-        {status === "open" && (
-          <span>
-            {t("startsIn")} <Countdown to={party.startsAt.toISOString()} />
-          </span>
-        )}
-        {status === "live" && (
-          <span>
-            {t("endsIn")} <Countdown to={party.endsAt.toISOString()} />
-          </span>
+        {status === "open" &&
+          (party.startsAt ? (
+            <span>
+              {t("startsIn")} <Countdown to={party.startsAt.toISOString()} />
+            </span>
+          ) : (
+            <span className="text-muted-foreground">{t("waitingForStart")}</span>
+          ))}
+        {status === "live" &&
+          (party.endsAt ? (
+            <span>
+              {t("endsIn")} <Countdown to={party.endsAt.toISOString()} />
+            </span>
+          ) : (
+            <span className="text-muted-foreground">{t("runsUntilEnded")}</span>
+          ))}
+        {status !== "draft" && (
+          <LifecycleButtons partyId={partyId} status={status} size="sm" />
         )}
         {status === "draft" && (
           <Link
@@ -156,8 +167,10 @@ export default async function Dashboard({
                   <span className="min-w-0 flex-1 truncate">{c.title}</span>
                   {c.hidden ? (
                     <Badge variant="destructive">{tc("hidden")}</Badge>
-                  ) : c.state === "over" ? (
-                    <span className="text-muted-foreground">{t("flashOver")}</span>
+                  ) : c.state === "over" || c.state === "unscheduled" ? (
+                    <span className="text-muted-foreground">
+                      {c.state === "over" ? t("flashOver") : t("flashUnscheduled")}
+                    </span>
                   ) : (
                     <span className="text-muted-foreground">
                       {c.state === "running" ? t("flashEndsIn") : t("flashStartsIn")}{" "}
@@ -254,7 +267,8 @@ export default async function Dashboard({
 const flashOrder: Record<FlashState, number> = {
   running: 0,
   upcoming: 1,
-  over: 2,
+  unscheduled: 2,
+  over: 3,
 };
 
 function Stat({

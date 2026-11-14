@@ -32,7 +32,7 @@ export async function createParty(
       values: submittedValues(formData),
     };
   }
-  const { name, description, startsAt, endsAt } = parsed.data;
+  const { name, description, startsAt, endsAt, durationMin } = parsed.data;
 
   // Retry on the rare join code collision.
   let partyId: string | undefined;
@@ -47,6 +47,7 @@ export async function createParty(
             joinCode: generateJoinCode(),
             startsAt,
             endsAt,
+            durationMin,
             createdBy: user.id,
           })
           .returning({ id: parties.id });

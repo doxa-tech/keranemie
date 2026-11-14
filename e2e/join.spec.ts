@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import {
+  addChallenge,
   addTeams,
   createParty,
   joinAsPlayer,
@@ -68,6 +69,36 @@ test("players join an open party and are spread over the teams", async ({
   // Players can't open the admin pages.
   await ana.goto(`/admin/${partyId}`);
   await expect(ana).toHaveURL(/\/admin\/login$/);
+});
+
+test("a party is started and ended by hand", async ({ browser, page }) => {
+  await loginAsAdmin(page);
+  const partyId = await createParty(page, {
+    name: "Manual party",
+    startsAt: "",
+    duration: "Until ended",
+  });
+  await addTeams(page, partyId, ["Foxes"]);
+  await addChallenge(page, partyId, { title: "Group selfie" });
+  await lifecycle(page, partyId, "Open the party");
+  const code = await joinCode(page, partyId);
+
+  const ana = await joinAsPlayer(browser, code, "Ana");
+  await expect(ana.getByText("The party starts soon!")).toBeVisible();
+
+  // Started from the dashboard; the player's screen follows live.
+  await page.goto(`/admin/${partyId}`);
+  await expect(page.getByText("Waiting for “Start now”")).toBeVisible();
+  await page.getByRole("button", { name: "Start now" }).click();
+  await page.getByRole("dialog").getByRole("button", { name: "Start now" }).click();
+  await expect(page.getByText("Runs until you end it")).toBeVisible();
+  const todo = ana.getByRole("list", { name: "To do" });
+  await expect(todo.getByText("Group selfie")).toBeVisible();
+  await expect(ana.getByText(/^Ends in/)).toHaveCount(0);
+
+  await page.getByRole("button", { name: "End now" }).click();
+  await page.getByRole("dialog").getByRole("button", { name: "End now" }).click();
+  await expect(ana.getByText("The party is over. Thanks for playing!")).toBeVisible();
 });
 
 test("an unknown code shows an error", async ({ page }) => {

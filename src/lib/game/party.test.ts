@@ -5,6 +5,7 @@ import {
   JOIN_CODE_LENGTH,
   normalizeJoinCode,
   partyStatus,
+  plannedDurationMin,
 } from "./party";
 
 const startsAt = new Date("2026-12-01T18:00:00Z");
@@ -25,6 +26,27 @@ describe("partyStatus", () => {
     expect(partyStatus(party, startsAt)).toBe("live");
     expect(partyStatus(party, during)).toBe("live");
     expect(partyStatus(party, endsAt)).toBe("ended");
+  });
+
+  it("stays open until started by hand, and live until ended by hand", () => {
+    const later = new Date("2027-06-01T00:00:00Z");
+    expect(
+      partyStatus({ openedAt: before, startsAt: null, endsAt: null }, later),
+    ).toBe("open");
+    expect(
+      partyStatus({ openedAt: before, startsAt, endsAt: null }, later),
+    ).toBe("live");
+  });
+});
+
+describe("plannedDurationMin", () => {
+  it("uses the chosen duration, else the scheduled times", () => {
+    const times = { openedAt: null, startsAt: null, endsAt: null };
+    expect(plannedDurationMin({ ...times, durationMin: 90 })).toBe(90);
+    expect(
+      plannedDurationMin({ ...times, startsAt, endsAt, durationMin: null }),
+    ).toBe(240);
+    expect(plannedDurationMin({ ...times, startsAt, durationMin: null })).toBeNull();
   });
 });
 

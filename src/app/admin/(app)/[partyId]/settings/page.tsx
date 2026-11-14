@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { requirePartyAdmin } from "@/lib/auth";
 import { toLocalInputValue } from "@/lib/dates";
-import { partyStatus } from "@/lib/game/party";
+import { partyStatus, plannedDurationMin } from "@/lib/game/party";
 import {
   getParty,
   inviteUrl,
@@ -20,13 +20,11 @@ import {
 } from "@/lib/parties";
 import {
   deleteParty,
-  endPartyNow,
-  openParty,
   removeAdmin,
   revokeInvitation,
-  startPartyNow,
   updateParty,
 } from "./actions";
+import { LifecycleButtons } from "../lifecycle-buttons";
 import { InviteForm } from "./invite-form";
 
 export default async function SettingsPage({
@@ -53,31 +51,7 @@ export default async function SettingsPage({
           <CardDescription>{t(`lifecycle.status.${status}`)}</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-wrap gap-2">
-          {status === "draft" && (
-            <ConfirmButton
-              label={t("lifecycle.open")}
-              title={t("lifecycle.openTitle")}
-              description={t("lifecycle.openDescription")}
-              action={openParty.bind(null, partyId)}
-            />
-          )}
-          {status === "open" && (
-            <ConfirmButton
-              label={t("lifecycle.startNow")}
-              title={t("lifecycle.startNowTitle")}
-              description={t("lifecycle.startNowDescription")}
-              action={startPartyNow.bind(null, partyId)}
-            />
-          )}
-          {status === "live" && (
-            <ConfirmButton
-              label={t("lifecycle.endNow")}
-              title={t("lifecycle.endNowTitle")}
-              description={t("lifecycle.endNowDescription")}
-              action={endPartyNow.bind(null, partyId)}
-              variant="destructive"
-            />
-          )}
+          <LifecycleButtons partyId={partyId} status={status} />
         </CardContent>
       </Card>
 
@@ -92,8 +66,10 @@ export default async function SettingsPage({
             defaults={{
               name: party.name,
               description: party.description ?? "",
-              startsAt: toLocalInputValue(party.startsAt, timeZone),
-              endsAt: toLocalInputValue(party.endsAt, timeZone),
+              startsAt: party.startsAt
+                ? toLocalInputValue(party.startsAt, timeZone)
+                : "",
+              durationMin: plannedDurationMin(party),
             }}
           />
         </CardContent>

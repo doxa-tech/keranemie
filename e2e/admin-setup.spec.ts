@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { createParty, loginAsAdmin, uniqueEmail } from "./helpers";
+import { createParty, fillDateTime, loginAsAdmin, uniqueEmail } from "./helpers";
 
 test("an admin sets up teams, challenges and opens the party", async ({
   page,
@@ -56,8 +56,8 @@ test("an admin sets up teams, challenges and opens the party", async ({
   await page.getByRole("link", { name: "New challenge" }).click();
   await page.getByLabel("Title").fill("Flash selfie");
   await page.getByLabel("Availability").selectOption("flash");
-  await page.getByLabel("Start").fill("2030-07-01T20:00");
-  await page.getByLabel("Duration (minutes)").fill("10");
+  await fillDateTime(page, "Start", "2030-07-01T20:00");
+  await page.getByRole("button", { name: "10 min", exact: true }).click();
   await page.getByRole("button", { name: "Create challenge" }).click();
 
   const flash = page

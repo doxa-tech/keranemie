@@ -56,16 +56,17 @@ erDiagram
 | name | text | |
 | description | text null | |
 | join_code | text unique | 6 chars, no ambiguous characters (0/O, 1/I) |
-| starts_at | timestamptz | Scheduled start. "Start now" sets it to `now()` |
-| ends_at | timestamptz | Scheduled end. "End now" sets it to `now()` |
+| starts_at | timestamptz null | Scheduled start; null until started by hand. "Start now" sets it to `now()` |
+| ends_at | timestamptz null | Scheduled end: start + duration when both are known; null runs until "End now", which sets it to `now()` |
+| duration_min | int null | Chosen duration; "Start now" sets `ends_at` to `now()` + it. Null: until ended by hand |
 | opened_at | timestamptz null | Null = draft. "Open" sets it to `now()` |
 | created_by | uuid → auth.users | Owner |
 | created_at | timestamptz | |
 
 Derived status:
 - `opened_at` is null → **draft**
-- `now() < starts_at` → **open**
-- `now() < ends_at` → **live**
+- `starts_at` is null or `now() < starts_at` → **open**
+- `ends_at` is null or `now() < ends_at` → **live**
 - otherwise → **ended**
 
 ### `party_admins`
@@ -124,14 +125,14 @@ Derived status:
 | validation | enum `auto` \| `manual` | |
 | expected_answer | text null | Text type only |
 | kind | enum `permanent` \| `flash` | |
-| flash_starts_at | timestamptz null | Flash only. Launching from the dashboard sets it to `now()`, `now()` + a timer, or a set time |
+| flash_starts_at | timestamptz null | Flash only, optional: null means not scheduled, waiting to be launched by hand. Launching from the dashboard sets it to `now()`, `now()` + a timer, or a set time |
 | flash_duration_min | int null | Flash only |
 | start_notified_at | timestamptz null | Flash only. Set when the start notification is sent; reset when `flash_starts_at` changes |
 | position | int | Display order |
 | hidden | boolean | |
 | created_at | timestamptz | |
 
-A challenge is **available** when the party is live, it isn't hidden, and (for flash ones) `flash_starts_at <= now() < flash_starts_at + duration`.
+A challenge is **available** when the party is live, it isn't hidden, and (for flash ones) `flash_starts_at <= now() < flash_starts_at + duration`; a flash challenge without a start is never available.
 
 ### `submissions`
 

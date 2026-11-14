@@ -9,7 +9,7 @@ import { z } from "zod";
 import { db } from "@/db";
 import { adminInvitations, parties, partyAdmins } from "@/db/schema";
 import { requireOwner, requirePartyAdmin } from "@/lib/auth";
-import { partyStatus } from "@/lib/game/party";
+import { partyStatus, plannedDurationMin } from "@/lib/game/party";
 import {
   parsePartyForm,
   partyFormError,
@@ -34,10 +34,16 @@ export async function updateParty(
       values: submittedValues(formData),
     };
   }
-  const { name, description, startsAt, endsAt } = parsed.data;
+  const { name, description, startsAt, endsAt, durationMin } = parsed.data;
   await db
     .update(parties)
-    .set({ name, description: description || null, startsAt, endsAt })
+    .set({
+      name,
+      description: description || null,
+      startsAt,
+      endsAt,
+      durationMin,
+    })
     .where(eq(parties.id, partyId));
   await broadcast(partyId, { type: "party.updated" });
   return { saved: true };
@@ -58,12 +64,15 @@ export async function startPartyNow(partyId: string) {
   const party = await getParty(partyId);
   const now = new Date();
   if (!party || partyStatus(party, now) !== "open") return;
+  // The planned duration counts from now; without one, the party runs
+  // until "End now".
+  const durationMin = plannedDurationMin(party);
   await db
     .update(parties)
     .set({
       startsAt: now,
-      // Keep the end after the start.
-      endsAt: party.endsAt > now ? party.endsAt : new Date(now.getTime() + 3600_000),
+      endsAt: durationMin ? new Date(now.getTime() + durationMin * 60_000) : null,
+      durationMin,
     })
     .where(eq(parties.id, partyId));
   await afterLifecycleChange(partyId);

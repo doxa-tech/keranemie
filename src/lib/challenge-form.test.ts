@@ -34,8 +34,13 @@ describe("parseChallengeForm", () => {
     });
   });
 
-  it("requires a start and a duration for flash challenges", () => {
+  it("requires a duration for flash challenges, and a valid start if any", () => {
     expect(parseChallengeForm(form({ kind: "flash" })).success).toBe(false);
+    expect(
+      parseChallengeForm(
+        form({ kind: "flash", flashStartsAt: "soon", flashDurationMin: "15" }),
+      ).success,
+    ).toBe(false);
     expect(
       parseChallengeForm(
         form({
@@ -55,6 +60,17 @@ describe("parseChallengeForm", () => {
     expect(result.data).toMatchObject({
       flashStartsAt: new Date("2026-12-01T19:00:00.000Z"),
       flashDurationMin: 15,
+    });
+  });
+
+  it("leaves a flash challenge without a start, to launch by hand", () => {
+    const result = parseChallengeForm(
+      form({ kind: "flash", flashStartsAt: "", flashDurationMin: "10" }),
+    );
+    expect(result.data).toMatchObject({
+      kind: "flash",
+      flashStartsAt: null,
+      flashDurationMin: 10,
     });
   });
 

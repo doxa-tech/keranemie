@@ -41,19 +41,25 @@ export default async function PlayerHome({
             className="justify-center pt-2"
           />
         </div>
-        <div className="space-y-1">
-          <p className="text-muted-foreground">{t("startsIn")}</p>
-          <p className="text-4xl font-semibold">
-            <Countdown to={party.startsAt.toISOString()} />
-          </p>
-          <p className="text-muted-foreground text-sm">
-            {format.dateTime(party.startsAt, {
-              weekday: "long",
-              hour: "numeric",
-              minute: "2-digit",
-            })}
-          </p>
-        </div>
+        {party.startsAt ? (
+          <div className="space-y-1">
+            <p className="text-muted-foreground">{t("startsIn")}</p>
+            <p className="text-4xl font-semibold">
+              <Countdown to={party.startsAt.toISOString()} />
+            </p>
+            <p className="text-muted-foreground text-sm">
+              {format.dateTime(party.startsAt, {
+                weekday: "long",
+                hour: "2-digit",
+                minute: "2-digit",
+                hourCycle: "h23",
+              })}
+            </p>
+          </div>
+        ) : (
+          // Started by hand: the page refreshes on the party.updated event.
+          <p className="text-2xl font-semibold">{t("startsSoon")}</p>
+        )}
         <p className="text-muted-foreground max-w-xs text-sm">
           {t("waitingHint")}
         </p>
@@ -80,9 +86,11 @@ export default async function PlayerHome({
       {status === "ended" ? (
         <p className="rounded-xl border p-3 text-center">{t("ended")}</p>
       ) : (
-        <p className="text-muted-foreground text-center text-sm">
-          {t("endsIn")} <Countdown to={party.endsAt.toISOString()} />
-        </p>
+        party.endsAt && (
+          <p className="text-muted-foreground text-center text-sm">
+            {t("endsIn")} <Countdown to={party.endsAt.toISOString()} />
+          </p>
+        )
       )}
       <ScoreCard
         playerScore={playerScore}

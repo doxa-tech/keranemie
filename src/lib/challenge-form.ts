@@ -14,9 +14,11 @@ const challengeInput = z
   })
   .transform((c, ctx) => {
     const flash = c.kind === "flash";
-    const flashStartsAt = flash ? new Date(c.flashStartsAt) : null;
+    // No start: the flash challenge waits to be launched by hand.
+    const flashStartsAt =
+      flash && c.flashStartsAt ? new Date(c.flashStartsAt) : null;
     const flashDurationMin = flash ? Number(c.flashDurationMin) : null;
-    if (flash && (!flashStartsAt || Number.isNaN(flashStartsAt.getTime()))) {
+    if (flashStartsAt && Number.isNaN(flashStartsAt.getTime())) {
       ctx.addIssue({ code: "custom", path: ["flashStartsAt"], message: "flash" });
     }
     if (

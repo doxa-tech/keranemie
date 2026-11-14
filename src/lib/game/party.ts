@@ -2,17 +2,32 @@ export type PartyStatus = "draft" | "open" | "live" | "ended";
 
 export type PartyTimes = {
   openedAt: Date | null;
-  startsAt: Date;
-  endsAt: Date;
+  // Null: not scheduled, started by hand.
+  startsAt: Date | null;
+  // Null: runs until ended by hand.
+  endsAt: Date | null;
 };
 
 // The status is derived from timestamps: "open now", "start now" and
 // "end now" just set the matching timestamp to the current time.
 export function partyStatus(party: PartyTimes, now: Date): PartyStatus {
   if (!party.openedAt) return "draft";
-  if (now < party.startsAt) return "open";
-  if (now < party.endsAt) return "live";
+  if (!party.startsAt || now < party.startsAt) return "open";
+  if (!party.endsAt || now < party.endsAt) return "live";
   return "ended";
+}
+
+// The planned length in minutes, or null when the party runs until ended
+// by hand. Parties created before durations were stored have none: their
+// length comes from their times.
+export function plannedDurationMin(
+  party: PartyTimes & { durationMin: number | null },
+): number | null {
+  if (party.durationMin) return party.durationMin;
+  if (party.startsAt && party.endsAt) {
+    return Math.round((party.endsAt.getTime() - party.startsAt.getTime()) / 60_000);
+  }
+  return null;
 }
 
 // Players can join an open or live party.

@@ -1,21 +1,26 @@
 "use client";
 
-import { useActionState } from "react";
-import { useTranslations } from "next-intl";
+import { useActionState, useState, useSyncExternalStore } from "react";
+import { useFormatter, useTranslations } from "next-intl";
 import { DateTimeField } from "@/components/date-time-field";
+import { DurationField } from "@/components/duration-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import type { PartyFormState } from "@/lib/party-form";
+import { MAX_PARTY_MINUTES, type PartyFormState } from "@/lib/party-form";
 
 type Defaults = {
   name: string;
   description: string;
-  // datetime-local values in the user's time zone
+  // "YYYY-MM-DDTHH:mm" in the user's time zone, or "" (started by hand)
   startsAt: string;
-  endsAt: string;
+  // null: until ended by hand
+  durationMin: number | null;
 };
+
+// Quick choices for the party duration, in minutes.
+const DURATION_PRESETS = [60, 120, 180, 240, 360];
 
 export function PartyForm({
   action,
@@ -27,7 +32,22 @@ export function PartyForm({
   submitLabel: string;
 }) {
   const t = useTranslations("PartyForm");
+  const format = useFormatter();
   const [state, formAction, pending] = useActionState(action, {});
+  const [startsAt, setStartsAt] = useState(defaults?.startsAt ?? "");
+  const [durationMin, setDurationMin] = useState<number | null>(
+    defaults ? defaults.durationMin : 180,
+  );
+  // The end depends on the device time zone: shown after hydration only.
+  const mounted = useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false,
+  );
+  const endsAt =
+    mounted && startsAt && durationMin
+      ? new Date(new Date(startsAt).getTime() + durationMin * 60_000)
+      : null;
 
   return (
     <form action={formAction} className="max-w-lg space-y-4">
@@ -53,25 +73,46 @@ export function PartyForm({
           {t("descriptionHint")}
         </p>
       </div>
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div className="space-y-2">
-          <Label htmlFor="startsAt">{t("startsAt")}</Label>
-          <DateTimeField
-            id="startsAt"
-            name="startsAt"
-            required
-            defaultValue={defaults?.startsAt}
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="endsAt">{t("endsAt")}</Label>
-          <DateTimeField
-            id="endsAt"
-            name="endsAt"
-            required
-            defaultValue={defaults?.endsAt}
-          />
-        </div>
+      <div className="space-y-2">
+        <Label htmlFor="startsAt">{t("startsAt")}</Label>
+        <DateTimeField
+          id="startsAt"
+          name="startsAt"
+          label={t("startsAt")}
+          defaultValue={defaults?.startsAt}
+          onLocalChange={setStartsAt}
+        />
+        <p className="text-muted-foreground text-xs">{t("startsAtHint")}</p>
+      </div>
+      <div className="space-y-2">
+        <Label id="durationMin-label">{t("duration")}</Label>
+        <DurationField
+          name="durationMin"
+          labelId="durationMin-label"
+          presets={DURATION_PRESETS}
+          defaultValue={defaults ? defaults.durationMin : 180}
+          maxMinutes={MAX_PARTY_MINUTES}
+          allowNone
+          onChange={setDurationMin}
+        />
+        {mounted && (
+          <p className="text-muted-foreground text-sm" data-testid="ends-at">
+            {endsAt
+              ? t("endsAtPreview", {
+                  date: format.dateTime(endsAt, {
+                    weekday: "long",
+                    day: "numeric",
+                    month: "long",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hourCycle: "h23",
+                  }),
+                })
+              : durationMin
+                ? t("durationFromStartPreview")
+                : t("untilEndedPreview")}
+          </p>
+        )}
       </div>
       {state.saved && (
         <p className="text-muted-foreground text-sm" role="status">
@@ -88,4 +129,8 @@ export function PartyForm({
       </Button>
     </form>
   );
+}
+
+function noopSubscribe() {
+  return () => {};
 }

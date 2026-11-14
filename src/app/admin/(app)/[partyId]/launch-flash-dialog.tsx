@@ -122,7 +122,12 @@ function LaunchFlashForm({
       {when === "at" && (
         <div className="space-y-2">
           <Label htmlFor={id("at")}>{t("startsAt")}</Label>
-          <DateTimeField id={id("at")} name="startsAt" required />
+          <DateTimeField
+            id={id("at")}
+            name="startsAt"
+            label={t("startsAt")}
+            required
+          />
         </div>
       )}
       {state.error && (

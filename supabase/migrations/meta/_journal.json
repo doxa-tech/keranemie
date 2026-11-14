@@ -22,6 +22,20 @@
       "when": 1794511782624,
       "tag": "20261112192942_flash_notification_cron",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1794616625460,
+      "tag": "20261114003705_optional_flash_start",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1794617213247,
+      "tag": "20261114004653_manual_party_times",
+      "breakpoints": true
     }
   ]
 }

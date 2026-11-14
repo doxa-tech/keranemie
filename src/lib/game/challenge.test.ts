@@ -45,6 +45,25 @@ describe("flash timing", () => {
     );
     expect(flashState(flash, new Date("2026-12-01T19:15:00Z"))).toBe("over");
   });
+
+  it("is unscheduled, and never available, until it gets a start", () => {
+    const manual = { ...flash, flashStartsAt: null };
+    expect(flashState(manual, new Date("2026-12-01T19:00:00Z"))).toBe(
+      "unscheduled",
+    );
+    expect(flashEndsAt(manual)).toBeNull();
+    expect(
+      isChallengeAvailable(
+        manual,
+        {
+          openedAt: new Date("2026-12-01T17:00:00Z"),
+          startsAt: new Date("2026-12-01T18:00:00Z"),
+          endsAt: new Date("2026-12-01T23:00:00Z"),
+        },
+        new Date("2026-12-01T19:00:00Z"),
+      ),
+    ).toBe(false);
+  });
 });
 
 describe("isChallengeAvailable", () => {

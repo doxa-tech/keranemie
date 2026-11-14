@@ -8,7 +8,21 @@
     "moveUp": "Move up",
     "moveDown": "Move down",
     "close": "Close",
-    "daysShort": "d"
+    "daysShort": "d",
+    "timeOf": "{field}, time",
+    "invalidTime": "Enter a 24-hour time, like 18:30.",
+    "timePlaceholder": "hh:mm",
+    "dateAndTime": "Enter both the date and the time, or leave both empty."
+  },
+  "Duration": {
+    "minutes": "{count} min",
+    "hours": "{count} h",
+    "hoursMinutes": "{hours} h {minutes}",
+    "custom": "Custom",
+    "customHours": "Hours",
+    "customMinutes": "Minutes",
+    "outOfRange": "Choose a duration between 1 minute and {max}.",
+    "untilStopped": "Until ended"
   },
   "Home": {
     "title": "Keranemie",
@@ -36,7 +50,9 @@
     "myParties": "My parties",
     "newParty": "New party",
     "createParty": "Create party",
-    "noParties": "No parties yet. Create one to get started."
+    "noParties": "No parties yet. Create one to get started.",
+    "startsAtUntilEnded": "{date}, until ended",
+    "startedByHand": "Started by hand"
   },
   "PartyStatus": {
     "draft": "Draft",
@@ -49,12 +65,16 @@
     "description": "Description",
     "descriptionHint": "Optional. Shown to players when they join.",
     "startsAt": "Start",
-    "endsAt": "End",
+    "duration": "Duration",
+    "endsAtPreview": "Ends {date}",
     "errors": {
       "invalid": "Please check the fields.",
-      "endsBeforeStart": "The end must be after the start."
+      "duration": "Choose a duration between 1 minute and 14 days."
     },
-    "saved": "Saved."
+    "saved": "Saved.",
+    "startsAtHint": "Optional. Leave empty to start it by hand with “Start now”.",
+    "durationFromStartPreview": "Starts when you press “Start now”, then lasts this long.",
+    "untilEndedPreview": "Runs until you press “End now”."
   },
   "PartyNav": {
     "share": "Share",
@@ -80,7 +100,7 @@
       "title": "Party status",
       "status": {
         "draft": "Draft: players can't join yet. Open the party when teams and challenges are ready.",
-        "open": "Open: players can join. Challenges appear at the start time.",
+        "open": "Open: players can join. Challenges appear when the party starts.",
         "live": "Live: players are completing challenges.",
         "ended": "Ended: no more submissions. Results stay visible."
       },
@@ -89,7 +109,7 @@
       "openDescription": "Players will be able to join with the code. Challenges stay hidden until the start time.",
       "startNow": "Start now",
       "startNowTitle": "Start the party now?",
-      "startNowDescription": "The start time becomes now and challenges become available.",
+      "startNowDescription": "The party starts now and challenges become available. With a planned duration, it ends that long from now; otherwise it runs until you end it.",
       "endNow": "End now",
       "endNowTitle": "End the party now?",
       "endNowDescription": "Players won't be able to submit anymore. This can't be undone."
@@ -163,7 +183,8 @@
     "flash": {
       "upcoming": "Flash: upcoming",
       "running": "Flash: running",
-      "over": "Flash: over"
+      "over": "Flash: over",
+      "unscheduled": "Flash: not scheduled"
     },
     "visible": "Visible",
     "edit": "Edit",
@@ -200,11 +221,12 @@
       "flash": "Flash: for a limited time"
     },
     "flashStartsAt": "Start",
-    "flashDurationMin": "Duration (minutes)",
+    "flashDurationMin": "Duration",
     "errors": {
       "invalid": "Please check the fields.",
-      "flash": "A flash challenge needs a start and a duration between 1 and 1440 minutes."
-    }
+      "flash": "A flash challenge needs a duration between 1 minute and 24 hours, and a valid start if you give one."
+    },
+    "flashStartsAtHint": "Optional. Leave empty to launch it by hand from the dashboard."
   },
   "Join": {
     "nameLabel": "Your name",
@@ -239,7 +261,8 @@
     "endsIn": "Ends in",
     "teammates": "Teammates",
     "you": "you",
-    "aloneInTeam": "No one else in this team yet."
+    "aloneInTeam": "No one else in this team yet.",
+    "startsSoon": "The party starts soon!"
   },
   "Challenge": {
     "back": "All challenges",
@@ -345,7 +368,10 @@
         "invalid": "Please check the fields. The timer is between 1 and 1440 minutes.",
         "past": "This time has already passed."
       }
-    }
+    },
+    "flashUnscheduled": "not scheduled",
+    "waitingForStart": "Waiting for “Start now”",
+    "runsUntilEnded": "Runs until you end it"
   },
   "Gallery": {
     "title": "Photos",

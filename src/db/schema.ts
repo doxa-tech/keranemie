@@ -42,8 +42,11 @@ export const parties = pgTable("parties", {
   name: text("name").notNull(),
   description: text("description"),
   joinCode: text("join_code").notNull().unique(),
-  startsAt: timestamp("starts_at", { withTimezone: true }).notNull(),
-  endsAt: timestamp("ends_at", { withTimezone: true }).notNull(),
+  // No start: waiting for "Start now". No end: runs until "End now".
+  startsAt: timestamp("starts_at", { withTimezone: true }),
+  endsAt: timestamp("ends_at", { withTimezone: true }),
+  // Chosen duration; sets the end when the party is started by hand.
+  durationMin: integer("duration_min"),
   // Null while the party is a draft.
   openedAt: timestamp("opened_at", { withTimezone: true }),
   createdBy: uuid("created_by")
@@ -145,7 +148,7 @@ export const challenges = pgTable(
     // Text challenges only.
     expectedAnswer: text("expected_answer"),
     kind: challengeKind("kind").notNull().default("permanent"),
-    // Flash challenges only.
+    // Flash challenges only. No start: waiting to be launched by hand.
     flashStartsAt: timestamp("flash_starts_at", { withTimezone: true }),
     flashDurationMin: integer("flash_duration_min"),
     startNotifiedAt: timestamp("start_notified_at", { withTimezone: true }),
@@ -157,7 +160,7 @@ export const challenges = pgTable(
     index("challenges_party_id_idx").on(t.partyId),
     check(
       "challenges_flash_fields",
-      sql`${t.kind} = 'permanent' or (${t.flashStartsAt} is not null and ${t.flashDurationMin} > 0)`,
+      sql`${t.kind} = 'permanent' or ${t.flashDurationMin} > 0`,
     ),
   ],
 ).enableRLS();

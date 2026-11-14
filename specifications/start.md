@@ -23,7 +23,7 @@ An admin can open, start or end the party manually, overriding the scheduled tim
 An admin can create a party for their event. A party has:
 - Name
 - Description (optional, shown to players on join)
-- Start and end time
+- Start time (24-hour, optional) and duration (quick choices: 1, 2, 3, 4 or 6 hours, a custom duration up to 14 days, or "until ended"); the end is computed from them. Without a start, an admin starts the party by hand ("Start now", also on the dashboard), and a planned duration then counts from that moment. Without a duration, it runs until an admin ends it ("End now")
 - Join code (generated, 6 characters) and QR code / join link
 
 The admin gets the code and the QR code to share access to the party (displayable full screen for projection).
@@ -53,7 +53,7 @@ The admin configures the challenges. Each challenge has:
 
 Availability:
 - **Permanent challenges**: available for the whole duration of the party
-- **Flash challenges**: available for a limited time. Has a start time and a duration. Players are notified when it starts. It can also be launched from the dashboard: now, after a timer ("in 10 minutes"), or at a set time. Launching restarts it for its full duration, even if it already ran.
+- **Flash challenges**: available for a limited time. Has a duration (quick choices: 5, 10, 15, 30 or 60 minutes, or custom) and an optional start time; without one, it waits until an admin launches it. Players are notified when it starts. It can also be launched from the dashboard: now, after a timer ("in 10 minutes"), or at a set time. Launching restarts it for its full duration, even if it already ran.
 
 Challenges can be reordered, edited, and hidden while the party is live. Editing the points of a challenge does not change already approved submissions.
 

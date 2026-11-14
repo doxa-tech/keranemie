@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 import {
   ADMIN_PASSWORD,
+  fillDateTime,
   loginAsAdmin,
   magicLinkFor,
   uniqueEmail,
@@ -16,12 +17,14 @@ test("an admin signs in, creates a party and shares it", async ({ page }) => {
   await page.getByRole("link", { name: "New party" }).click();
   await page.getByLabel("Name").fill("Summer party");
   await page.getByLabel("Description").fill("Bring a phone.");
-  await page.getByLabel("Start").fill("2030-07-01T18:00");
-  await page.getByLabel("End").fill("2030-07-01T17:00");
-  await page.getByRole("button", { name: "Create party" }).click();
-  await expect(page.getByText("The end must be after the start.")).toBeVisible();
-
-  await page.getByLabel("End").fill("2030-07-01T23:00");
+  // 24-hour time, typed as on a phone keypad; the end follows the duration.
+  await page.getByLabel("Start", { exact: true }).fill("2030-07-01");
+  await page.getByLabel("Start, time").fill("18h00");
+  await page.getByRole("button", { name: "3 h", exact: true }).click();
+  await expect(page.getByTestId("ends-at")).toHaveText(/Monday, July 1.* 21:00$/);
+  await page.getByRole("button", { name: "Custom" }).click();
+  await page.getByLabel("Hours").fill("26");
+  await expect(page.getByTestId("ends-at")).toHaveText(/Tuesday, July 2.* 20:00$/);
   await page.getByRole("button", { name: "Create party" }).click();
   await expect(
     page.getByRole("heading", { name: "Summer party" }),
@@ -95,8 +98,7 @@ test("an admin can't open another admin's party", async ({ browser }) => {
   await loginAsAdmin(owner);
   await owner.getByRole("link", { name: "New party" }).click();
   await owner.getByLabel("Name").fill("Private party");
-  await owner.getByLabel("Start").fill("2030-07-01T18:00");
-  await owner.getByLabel("End").fill("2030-07-01T23:00");
+  await fillDateTime(owner, "Start", "2030-07-01T18:00");
   await owner.getByRole("button", { name: "Create party" }).click();
   await expect(owner.getByRole("heading", { name: "Private party" })).toBeVisible();
   const partyUrl = owner.url();

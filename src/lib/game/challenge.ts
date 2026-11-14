@@ -15,11 +15,12 @@ export function flashEndsAt(challenge: ChallengeTiming): Date | null {
   );
 }
 
-export type FlashState = "upcoming" | "running" | "over";
+// "unscheduled": no start yet, waiting to be launched by hand.
+export type FlashState = "unscheduled" | "upcoming" | "running" | "over";
 
 export function flashState(challenge: ChallengeTiming, now: Date): FlashState {
   const end = flashEndsAt(challenge);
-  if (!challenge.flashStartsAt || !end) return "over";
+  if (!challenge.flashStartsAt || !end) return "unscheduled";
   if (now < challenge.flashStartsAt) return "upcoming";
   if (now < end) return "running";
   return "over";
@@ -74,13 +75,13 @@ export function validateSubmission(
 }
 
 // The next time the list of available challenges changes on its own:
-// a flash challenge starting or ending, or the party ending.
+// a flash challenge starting or ending, or the party ending (if planned).
 export function nextScheduledChange(
   challenges: ChallengeTiming[],
-  partyEndsAt: Date,
+  partyEndsAt: Date | null,
   now: Date,
 ): Date | null {
-  const times = [partyEndsAt];
+  const times = partyEndsAt ? [partyEndsAt] : [];
   for (const challenge of challenges) {
     if (challenge.kind !== "flash" || challenge.hidden) continue;
     if (challenge.flashStartsAt) times.push(challenge.flashStartsAt);
