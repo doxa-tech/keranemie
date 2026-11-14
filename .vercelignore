@@ -1,0 +1,10 @@
+# Not uploaded by `vercel deploy`: local secrets and build or test output.
+.env*
+!.env.example
+.next
+node_modules
+test-results
+playwright-report
+supabase/.temp
+supabase/.branches
+CLAUDE.md
